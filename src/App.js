@@ -99,7 +99,7 @@ function App() {
           </button>
         </div>
         <div>
-          {/*player2*/}
+          {/*player two*/}
           <div>
             {prevSets2.map((set) => {
               return <div>{set}</div>;

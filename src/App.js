@@ -20,10 +20,22 @@ function App() {
     } else if (points1 === 15) {
       setPoints1(30);
     } else if (points1 === 30) {
-      setPoints1(40);
+      if (points2 === 40) {
+        setPoints1("Deuce");
+        setPoints2("Deuce");
+      } else {
+        setPoints1(40);
+      }
+    } else if (points1 === "Deuce") {
+      setPoints1("ad");
+      setPoints2("-");
+    } else if (points2 === "ad") {
+      setPoints1("Deuce");
+      setPoints2("Deuce");
     } else {
       incSets1();
       setPoints1(0);
+      setPoints2(0);
     }
   };
 
@@ -32,7 +44,9 @@ function App() {
       setCurrSets1((set) => set + 1);
     } else {
       addPrevSets1();
+      addPrevSets2();
       setCurrSets1(0);
+      setCurrSets2(0);
     }
   };
 
@@ -48,10 +62,22 @@ function App() {
     } else if (points2 === 15) {
       setPoints2(30);
     } else if (points2 === 30) {
-      setPoints2(40);
+      if (points1 === 40) {
+        setPoints1("Deuce");
+        setPoints2("Deuce");
+      } else {
+        setPoints2(40);
+      }
+    } else if (points2 === "Deuce") {
+      setPoints2("ad");
+      setPoints1("-");
+    } else if (points1 === "ad") {
+      setPoints1("Deuce");
+      setPoints2("Deuce");
     } else {
       incSets2();
       setPoints2(0);
+      setPoints1(0);
     }
   };
 
@@ -59,7 +85,9 @@ function App() {
     if (currSets2 < 6) {
       setCurrSets2((set) => set + 1);
     } else {
+      addPrevSets1();
       addPrevSets2();
+      setCurrSets1(0);
       setCurrSets2(0);
     }
   };

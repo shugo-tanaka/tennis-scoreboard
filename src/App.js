@@ -100,49 +100,52 @@ function App() {
 
   return (
     <div>
-      <h1>Tennis Score</h1>
+      <h1 className="tennis-score">Tennis Score</h1>
       <div>
-        <div>
-          <div>Previous Sets</div>
-          <div>Sets</div>
-          <div>Games1</div>
-          <div>Points1</div>
+        <div className="labels">
+          <div className="previous-sets">Previous Sets</div>
+          <div className="name">Player Name</div>
+          <div className="sets">Sets</div>
+          <div className="games">Games</div>
+          <div className="points">Points</div>
         </div>
-        <div>
+        <div className="player1">
           {/*player1 1*/}
-          <div>
+          <div className="player-previous-sets">
             {prevSets1.map((set) => {
               return <div>{set}</div>;
             })}
           </div>
-          <div>{player1}</div>
-          <div>{currSets1}</div>
-          <div>{games1}</div>
-          <button
+          <div className="player-name">{player1}</div>
+          <div className="player-sets">{currSets1}</div>
+          <div className="player-games">{games1}</div>
+          <div
+            className="player-points"
             onClick={() => {
               incPoints1();
             }}
           >
             {points1}
-          </button>
+          </div>
         </div>
-        <div>
+        <div className="player2">
           {/*player two*/}
-          <div>
+          <div className="player-previous-sets">
             {prevSets2.map((set) => {
               return <div>{set}</div>;
             })}
           </div>
-          <div>{player2}</div>
-          <div>{currSets2}</div>
-          <div>{games2}</div>
-          <button
+          <div className="player-name">{player2}</div>
+          <div className="player-sets">{currSets2}</div>
+          <div className="player-games">{games2}</div>
+          <div
+            className="player-points"
             onClick={() => {
               incPoints2();
             }}
           >
             {points2}
-          </button>
+          </div>
         </div>
       </div>
     </div>

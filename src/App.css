@@ -1,38 +1,45 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.tennis-score {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.labels,
+.player1,
+.player2 {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  gap: 10px;
+  border: 1px solid black;
+  border-bottom: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.player2 {
+  border-bottom: 1px solid black;
+}
+
+.previous-sets,
+.player-previous-sets {
+  grid-column: 1/4;
+}
+
+.name,
+.player-name {
+  grid-column: 5/12;
+  white-space: nowrap;
+}
+
+.sets,
+.player-sets {
+  grid-column: 13/13;
+}
+
+.games1,
+.player-games1 {
+  grid-column: 14/14;
+}
+
+.points,
+.player-points {
+  grid-column: 15/16;
 }

@@ -148,6 +148,13 @@ function App() {
           </div>
         </div>
       </div>
+      <div className="tennis-court-image">
+        <img
+          src="/tennis-court-diagram.jpg"
+          alt="Tennis Court"
+          style={{ width: "75%", height: "75%" }}
+        />
+      </div>
     </div>
   );
 }

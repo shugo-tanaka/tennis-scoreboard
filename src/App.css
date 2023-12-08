@@ -22,10 +22,13 @@
 .player-previous-sets {
   grid-column: 1/4;
   border-right: 1px solid black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.player-previous-sets {
-  display: flex;
+.player-previous-sets div {
+  margin-right: 5px;
 }
 
 .name,
@@ -33,21 +36,40 @@
   grid-column: 5/12;
   white-space: nowrap;
   border-right: 1px solid black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .sets,
 .player-sets {
   grid-column: 13/13;
   border-right: 1px solid black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .games,
 .player-games {
   grid-column: 14/14;
   border-right: 1px solid black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .points,
 .player-points {
   grid-column: 15/16;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.tennis-court-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
 }

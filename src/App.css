@@ -9,7 +9,7 @@
 .player2 {
   display: grid;
   grid-template-columns: repeat(16, 1fr);
-  gap: 10px;
+  gap: 20px;
   border: 1px solid black;
   border-bottom: none;
 }
@@ -21,22 +21,30 @@
 .previous-sets,
 .player-previous-sets {
   grid-column: 1/4;
+  border-right: 1px solid black;
+}
+
+.player-previous-sets {
+  display: flex;
 }
 
 .name,
 .player-name {
   grid-column: 5/12;
   white-space: nowrap;
+  border-right: 1px solid black;
 }
 
 .sets,
 .player-sets {
   grid-column: 13/13;
+  border-right: 1px solid black;
 }
 
-.games1,
-.player-games1 {
+.games,
+.player-games {
   grid-column: 14/14;
+  border-right: 1px solid black;
 }
 
 .points,

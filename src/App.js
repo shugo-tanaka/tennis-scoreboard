@@ -14,6 +14,8 @@ function App() {
   const [games2, setGames2] = useState(0);
   const [points2, setPoints2] = useState(0);
 
+  const [serveCircles, setServeCircles] = useState([]);
+
   const incPoints1 = () => {
     if (points1 === 0) {
       setPoints1(15);
@@ -98,6 +100,17 @@ function App() {
     setPrevSets2(newSet);
   };
 
+  const handleImageClick = (event) => {
+    const container = event.currentTarget;
+    const rect = container.getBoundingClientRect();
+
+    // Calculate the adjusted coordinates
+    const x = event.nativeEvent.offsetX + rect.left;
+    const y = event.nativeEvent.offsetY + rect.top;
+
+    setServeCircles([...serveCircles, { x, y }]);
+  };
+
   return (
     <div>
       <h1 className="tennis-score">Tennis Score</h1>
@@ -153,7 +166,15 @@ function App() {
           src="/tennis-court-diagram.jpg"
           alt="Tennis Court"
           style={{ width: "75%", height: "75%" }}
+          onClick={handleImageClick}
         />
+        {serveCircles.map((circle, index) => (
+          <div
+            key={index}
+            className="serve-circles"
+            style={{ left: circle.x, top: circle.y }}
+          ></div>
+        ))}
       </div>
     </div>
   );

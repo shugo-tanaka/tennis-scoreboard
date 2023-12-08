@@ -25,6 +25,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  padding-left: 10px;
 }
 
 .player-previous-sets div {
@@ -39,6 +40,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  padding-left: 10px;
 }
 
 .sets,
@@ -48,6 +50,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  padding-left: 10px;
 }
 
 .games,
@@ -57,6 +60,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  padding-left: 10px;
 }
 
 .points,
@@ -65,6 +69,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  padding-left: 10px;
 }
 
 .tennis-court-image {
@@ -72,4 +77,15 @@
   justify-content: center;
   align-items: center;
   padding-top: 50px;
+  position: relative;
+  overflow: hidden;
+}
+
+.serve-circles {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #dfff4f;
+  border: 1px solid black;
+  border-radius: 50%;
 }

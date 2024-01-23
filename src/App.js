@@ -105,10 +105,12 @@ function App() {
     const rect = container.getBoundingClientRect();
 
     // Calculate the adjusted coordinates
-    const x = event.nativeEvent.offsetX + rect.left;
-    const y = event.nativeEvent.offsetY + rect.top;
+    const x = event.clientX - rect.left / 1.94;
+    const y = event.clientY - rect.top / 1.21;
 
-    setServeCircles([...serveCircles, { x, y }]);
+    const newServeCircle = { x, y };
+
+    setServeCircles([...serveCircles, newServeCircle]);
   };
 
   return (

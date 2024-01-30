@@ -21,7 +21,7 @@
 .previous-sets,
 .player-previous-sets {
   grid-column: 1/4;
-  border-right: 1px solid black;
+  border-right: 0px solid black;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -29,6 +29,7 @@
 }
 
 .player-previous-sets div {
+  /*why div*/
   margin-right: 5px;
 }
 
@@ -36,7 +37,7 @@
 .player-name {
   grid-column: 5/12;
   white-space: nowrap;
-  border-right: 1px solid black;
+  border-right: 0px solid black;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -46,7 +47,7 @@
 .sets,
 .player-sets {
   grid-column: 13/13;
-  border-right: 1px solid black;
+  border-right: 0px solid black;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -56,7 +57,7 @@
 .games,
 .player-games {
   grid-column: 14/14;
-  border-right: 1px solid black;
+  border-right: 0px solid black;
   display: flex;
   justify-content: flex-start;
   align-items: center;

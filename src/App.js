@@ -39,6 +39,7 @@ function App() {
       setPoints1(0);
       setPoints2(0);
     }
+    setServeCircles([]);
   };
 
   const incSets1 = () => {
@@ -81,6 +82,7 @@ function App() {
       setPoints2(0);
       setPoints1(0);
     }
+    setServeCircles([]);
   };
 
   const incSets2 = () => {
@@ -106,7 +108,7 @@ function App() {
 
     // Calculate the adjusted coordinates
     const x = event.clientX - rect.left / 1.94;
-    const y = event.clientY - rect.top / 1.21;
+    const y = event.clientY - rect.top / 1.243;
 
     const newServeCircle = { x, y };
 

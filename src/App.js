@@ -107,8 +107,13 @@ function App() {
     const rect = container.getBoundingClientRect();
 
     // Calculate the adjusted coordinates
-    const x = event.clientX + window.scrollX; //- rect.left / 1.94;
-    const y = event.clientY + window.scrollY; //- rect.top / 1.243;
+    const x = event.clientX + window.scrollX - rect.left - 5;
+    const y = event.clientY + window.scrollY - rect.top - 5;
+    const a = event.clientX;
+    const b = event.clientY;
+
+    console.log("clicked at", { a, b });
+    console.log("dot at:", { x, y });
 
     const newServeCircle = { x, y };
 
@@ -166,12 +171,11 @@ function App() {
           </div>
         </div>
       </div>
-      <div className="tennis-court-image">
+      <div className="tennis-court-image" onClick={handleImageClick}>
         <img
           src="/tennis-court-diagram.jpg"
           alt="Tennis Court"
           style={{ width: "75%", height: "75%" }}
-          onClick={handleImageClick}
         />
         {serveCircles.map((circle, index) => (
           <div

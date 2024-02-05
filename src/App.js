@@ -107,12 +107,13 @@ function App() {
     const rect = container.getBoundingClientRect();
 
     // Calculate the adjusted coordinates
-    const x = event.clientX - rect.left / 1.94;
-    const y = event.clientY - rect.top / 1.243;
+    const x = event.clientX + window.scrollX; //- rect.left / 1.94;
+    const y = event.clientY + window.scrollY; //- rect.top / 1.243;
 
     const newServeCircle = { x, y };
 
     setServeCircles([...serveCircles, newServeCircle]);
+    //create a pop-up that can record if click was first serve, second serve, let, last position of ball
   };
 
   return (

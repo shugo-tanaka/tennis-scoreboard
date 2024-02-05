@@ -107,13 +107,8 @@ function App() {
     const rect = container.getBoundingClientRect();
 
     // Calculate the adjusted coordinates
-    const x = event.clientX + window.scrollX - rect.left - 5;
-    const y = event.clientY + window.scrollY - rect.top - 5;
-    const a = event.clientX;
-    const b = event.clientY;
-
-    console.log("clicked at", { a, b });
-    console.log("dot at:", { x, y });
+    const x = event.clientX - rect.left - 5;
+    const y = event.clientY - rect.top - 5;
 
     const newServeCircle = { x, y };
 
@@ -124,7 +119,7 @@ function App() {
   return (
     <div>
       <h1 className="tennis-score">Tennis Score</h1>
-      <div>
+      <div className="data-table">
         <div className="labels">
           <div className="previous-sets">Previous Sets</div>
           <div className="name">Player Name</div>

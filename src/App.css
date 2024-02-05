@@ -2,6 +2,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
+}
+
+.data-table {
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid white;
+  margin-left: 20%;
+  margin-right: 20%;
 }
 
 .labels,
@@ -9,18 +18,17 @@
 .player2 {
   display: grid;
   grid-template-columns: repeat(16, 1fr);
-  gap: 20px;
-  border: 1px solid black;
-  border-bottom: none;
+  gap: 0px;
+  border-bottom: 1px solid white;
 }
 
 .player2 {
-  border-bottom: 1px solid black;
+  border-bottom: none;
 }
 
 .previous-sets,
 .player-previous-sets {
-  grid-column: 1/4;
+  grid-column: 1/6;
   border-right: 0px solid black;
   display: flex;
   justify-content: flex-start;
@@ -30,12 +38,12 @@
 
 .player-previous-sets div {
   /*why div*/
-  margin-right: 5px;
+  margin-right: 0px;
 }
 
 .name,
 .player-name {
-  grid-column: 5/12;
+  grid-column: 7/12;
   white-space: nowrap;
   border-right: 0px solid black;
   display: flex;
@@ -74,12 +82,18 @@
 }
 
 .tennis-court-image {
+  border-radius: 10px;
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 50px;
+  padding-top: 2%;
+  padding-bottom: 2%;
   position: relative;
   overflow: hidden;
+  margin-top: 20px;
+  margin-left: 20%;
+  margin-right: 20%;
 }
 
 .serve-circles {

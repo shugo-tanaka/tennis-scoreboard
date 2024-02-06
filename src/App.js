@@ -166,19 +166,28 @@ function App() {
           </div>
         </div>
       </div>
-      <div className="tennis-court-image" onClick={handleImageClick}>
-        <img
-          src="/tennis-court-diagram.jpg"
-          alt="Tennis Court"
-          style={{ width: "75%", height: "75%" }}
-        />
-        {serveCircles.map((circle, index) => (
-          <div
-            key={index}
-            className="serve-circles"
-            style={{ left: circle.x, top: circle.y }}
-          ></div>
-        ))}
+      <div className="section2">
+        <div className="tennis-court-image" onClick={handleImageClick}>
+          <img
+            src="/tennis-court-diagram.jpg"
+            alt="Tennis Court"
+            style={{ width: "75%", height: "75%" }}
+          />
+          {serveCircles.map((circle, index) => (
+            <div
+              key={index}
+              className="serve-circles"
+              style={{ left: circle.x, top: circle.y }}
+            ></div>
+          ))}
+        </div>
+        <div className="shot-type">
+          <div className="first-serve">First Serve</div>
+          <div className="second-serve">Second Serve</div>
+          <div className="non-serve">Non-Serve</div>
+          <div className="undo">Undo</div>
+          {/* maybe insert pic of undo instead */}
+        </div>
       </div>
     </div>
   );

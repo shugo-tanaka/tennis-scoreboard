@@ -81,19 +81,31 @@
   padding-left: 10px;
 }
 
+.section2 {
+  display: grid;
+  grid-template-columns: repeat(32, 1fr);
+  margin-left: 20%;
+  margin-right: 20%;
+  height: 300px;
+}
+
 .tennis-court-image {
+  grid-column: 1/26;
   border-radius: 10px;
   background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 2%;
-  padding-bottom: 2%;
   position: relative;
   overflow: hidden;
-  margin-top: 20px;
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-top: 10px;
+  /* margin-left: 20%;
+  margin-right: 20%; */
+}
+
+.shot-type {
+  margin-top: 10px;
+  grid-column: 27/32;
 }
 
 .serve-circles {
@@ -103,4 +115,18 @@
   background-color: #dfff4f;
   border: 1px solid black;
   border-radius: 50%;
+}
+
+.first-serve,
+.second-serve,
+.non-serve,
+.undo {
+  margin-bottom: 10px; /*margin adds space outside div, padding adds space inside div*/
+  margin-top: 10px;
+  display: flex;
+  justify-content: center; /*align horizontally*/
+  align-items: center;
+  background-color: white;
+  border-radius: 5px;
+  font-size: 16px;
 }

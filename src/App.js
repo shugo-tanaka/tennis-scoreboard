@@ -35,27 +35,32 @@ function App() {
       setPoints1("Deuce");
       setPoints2("Deuce");
     } else {
-      incSets1();
+      incGames1();
       setPoints1(0);
       setPoints2(0);
     }
     setServeCircles([]);
   };
 
-  const incSets1 = () => {
-    if (currSets1 < 6) {
-      setCurrSets1((set) => set + 1);
+  const incGames1 = () => {
+    if (games1 < 6) {
+      setGames1((set) => set + 1);
     } else {
+      incSets1();
       addPrevSets1();
       addPrevSets2();
-      setCurrSets1(0);
-      setCurrSets2(0);
+      setGames1(0);
+      setGames2(0);
     }
+  };
+
+  const incSets1 = () => {
+    setCurrSets1((set) => set + 1);
   };
 
   const addPrevSets1 = () => {
     let newSet = [...prevSets1];
-    newSet.push(currSets1);
+    newSet.push(games1);
     setPrevSets1(newSet);
   };
 
@@ -78,27 +83,32 @@ function App() {
       setPoints1("Deuce");
       setPoints2("Deuce");
     } else {
-      incSets2();
+      incGames2();
       setPoints2(0);
       setPoints1(0);
     }
     setServeCircles([]);
   };
 
-  const incSets2 = () => {
-    if (currSets2 < 6) {
-      setCurrSets2((set) => set + 1);
+  const incGames2 = () => {
+    if (games2 < 6) {
+      setGames2((set) => set + 1);
     } else {
+      incSets2();
       addPrevSets1();
       addPrevSets2();
-      setCurrSets1(0);
-      setCurrSets2(0);
+      setGames1(0);
+      setGames2(0);
     }
+  };
+
+  const incSets2 = () => {
+    setCurrSets2((set) => set + 1);
   };
 
   const addPrevSets2 = () => {
     let newSet = [...prevSets2];
-    newSet.push(currSets2);
+    newSet.push(games2);
     setPrevSets2(newSet);
   };
 
@@ -184,6 +194,7 @@ function App() {
         <div className="shot-type">
           <div className="first-serve">First Serve</div>
           <div className="second-serve">Second Serve</div>
+          <div className="let">Let</div>
           <div className="non-serve">Non-Serve</div>
           <div className="undo">Undo</div>
           {/* maybe insert pic of undo instead */}

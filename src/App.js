@@ -126,6 +126,12 @@ function App() {
     //create a pop-up that can record if click was first serve, second serve, let, last position of ball
   };
 
+  const undo = () => {
+    const tempServeCircles = [...serveCircles];
+    tempServeCircles.pop();
+    setServeCircles(tempServeCircles);
+  };
+
   return (
     <div>
       <h1 className="tennis-score">Tennis Score</h1>
@@ -196,7 +202,9 @@ function App() {
           <div className="second-serve">Second Serve</div>
           <div className="let">Let</div>
           <div className="non-serve">Non-Serve</div>
-          <div className="undo">Undo</div>
+          <div className="undo" onClick={undo}>
+            Undo
+          </div>
           {/* maybe insert pic of undo instead */}
         </div>
       </div>

@@ -139,7 +139,9 @@ function App() {
       ? "#dfff4f"
       : "#dfff4f";
 
-    const newServeCircle = { x, y, color: ballColor };
+    console.log("Ball Color:", ballColor);
+
+    const newServeCircle = { x, y, background: ballColor };
 
     setServeCircles([...serveCircles, newServeCircle]);
     //create a pop-up that can record if click was first serve, second serve, let, last position of ball
@@ -215,6 +217,7 @@ function App() {
               style={{
                 left: circle.x,
                 top: circle.y,
+                backgroundColor: circle.background,
               }}
             ></div>
           ))}

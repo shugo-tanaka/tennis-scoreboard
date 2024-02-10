@@ -16,6 +16,15 @@ function App() {
 
   const [serveCircles, setServeCircles] = useState([]);
 
+  const [firstServeClicked, setFirstServeClicked] = useState(false);
+  const [firstServeColor, setFirstServeColor] = useState("white");
+  const [secondServeClicked, setSecondServeClicked] = useState(false);
+  const [secondServeColor, setSecondServeColor] = useState("white");
+  const [letClicked, setLetClicked] = useState(false);
+  const [letColor, setLetColor] = useState("white");
+  const [nonServeClicked, setNonServeClicked] = useState(false);
+  const [nonServeColor, setNonServeColor] = useState("white");
+
   const incPoints1 = () => {
     if (points1 === 0) {
       setPoints1(15);
@@ -120,7 +129,17 @@ function App() {
     const x = event.clientX - rect.left - 5;
     const y = event.clientY - rect.top - 5;
 
-    const newServeCircle = { x, y };
+    const ballColor = firstServeClicked
+      ? "red"
+      : secondServeClicked
+      ? "blue"
+      : letClicked
+      ? "black"
+      : nonServeClicked
+      ? "#dfff4f"
+      : "#dfff4f";
+
+    const newServeCircle = { x, y, color: ballColor };
 
     setServeCircles([...serveCircles, newServeCircle]);
     //create a pop-up that can record if click was first serve, second serve, let, last position of ball
@@ -193,15 +212,86 @@ function App() {
             <div
               key={index}
               className="serve-circles"
-              style={{ left: circle.x, top: circle.y }}
+              style={{
+                left: circle.x,
+                top: circle.y,
+              }}
             ></div>
           ))}
         </div>
         <div className="shot-type">
-          <div className="first-serve">First Serve</div>
-          <div className="second-serve">Second Serve</div>
-          <div className="let">Let</div>
-          <div className="non-serve">Non-Serve</div>
+          <div
+            className="first-serve"
+            onClick={() => {
+              setFirstServeClicked(!firstServeClicked);
+              setFirstServeColor(firstServeClicked ? "white" : "grey");
+              setSecondServeClicked(false);
+              setLetClicked(false);
+              setNonServeClicked(false);
+              setSecondServeColor("white");
+              setLetColor("white");
+              setNonServeColor("white");
+            }}
+            style={{
+              backgroundColor: firstServeColor,
+            }}
+          >
+            First Serve
+          </div>
+          <div
+            className="second-serve"
+            onClick={() => {
+              setSecondServeClicked(!secondServeClicked);
+              setSecondServeColor(secondServeClicked ? "white" : "grey");
+              setFirstServeClicked(false);
+              setLetClicked(false);
+              setNonServeClicked(false);
+              setFirstServeColor("white");
+              setLetColor("white");
+              setNonServeColor("white");
+            }}
+            style={{
+              backgroundColor: secondServeColor,
+            }}
+          >
+            Second Serve
+          </div>
+          <div
+            className="let"
+            onClick={() => {
+              setLetClicked(!letClicked);
+              setLetColor(letClicked ? "white" : "grey");
+              setSecondServeClicked(false);
+              setFirstServeClicked(false);
+              setNonServeClicked(false);
+              setSecondServeColor("white");
+              setFirstServeColor("white");
+              setNonServeColor("white");
+            }}
+            style={{
+              backgroundColor: letColor,
+            }}
+          >
+            Let
+          </div>
+          <div
+            className="non-serve"
+            onClick={() => {
+              setNonServeClicked(!nonServeClicked);
+              setNonServeColor(nonServeClicked ? "white" : "grey");
+              setSecondServeClicked(false);
+              setLetClicked(false);
+              setFirstServeClicked(false);
+              setSecondServeColor("white");
+              setLetColor("white");
+              setFirstServeColor("white");
+            }}
+            style={{
+              backgroundColor: nonServeColor,
+            }}
+          >
+            Non-Serve
+          </div>
           <div className="undo" onClick={undo}>
             Undo
           </div>

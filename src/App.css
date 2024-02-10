@@ -81,9 +81,9 @@
 .player-points {
   grid-column: 15/16;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  padding-left: 10px;
+  padding-left: 5px;
 }
 
 .player-points {

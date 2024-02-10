@@ -129,19 +129,19 @@ function App() {
     const x = event.clientX - rect.left - 5;
     const y = event.clientY - rect.top - 5;
 
-    const ballColor = firstServeClicked
-      ? "red"
+    const ballText = firstServeClicked
+      ? "F"
       : secondServeClicked
-      ? "blue"
+      ? "S"
       : letClicked
-      ? "black"
+      ? "L"
       : nonServeClicked
-      ? "#dfff4f"
-      : "#dfff4f";
+      ? ""
+      : "";
 
-    console.log("Ball Color:", ballColor);
+    // console.log("Ball Color:", ballColor);
 
-    const newServeCircle = { x, y, background: ballColor };
+    const newServeCircle = { x, y, ballText };
 
     setServeCircles([...serveCircles, newServeCircle]);
     //create a pop-up that can record if click was first serve, second serve, let, last position of ball
@@ -217,9 +217,15 @@ function App() {
               style={{
                 left: circle.x,
                 top: circle.y,
-                backgroundColor: circle.background,
+                fontSize: "8.5px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontWeight: "bold",
               }}
-            ></div>
+            >
+              {circle.ballText}
+            </div>
           ))}
         </div>
         <div className="shot-type">

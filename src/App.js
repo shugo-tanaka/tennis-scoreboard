@@ -26,7 +26,18 @@ function App() {
   const [nonServeColor, setNonServeColor] = useState("white");
 
   const incPoints1 = () => {
-    if (points1 === 0) {
+    // tie break scenario
+    if (games1 === 6 && games2 === 6) {
+      setPoints1((prevPoints1) => {
+        const newPoints1 = prevPoints1 + 1;
+        if (newPoints1 >= 7 && newPoints1 > points2 + 1) {
+          incGames1();
+          setPoints1(0);
+          setPoints2(0);
+        }
+        return newPoints1;
+      });
+    } else if (points1 === 0) {
       setPoints1(15);
     } else if (points1 === 15) {
       setPoints1(30);
@@ -52,29 +63,59 @@ function App() {
   };
 
   const incGames1 = () => {
-    if (games1 < 6) {
-      setGames1((set) => set + 1);
-    } else {
-      incSets1();
-      addPrevSets1();
-      addPrevSets2();
-      setGames1(0);
-      setGames2(0);
-    }
+    setGames1((prevGames1) => {
+      // preGames1 is the previous games1?
+      const newGames1 = prevGames1 + 1;
+
+      if (newGames1 === 6 && games2 <= 4) {
+        incSets1();
+        addPrevSets1(newGames1);
+        addPrevSets2(games2);
+        setGames1(0);
+        setGames2(0);
+      } else if (newGames1 === 7 && games2 === 6) {
+        incSets1();
+        addPrevSets1(newGames1);
+        addPrevSets2(games2);
+        setGames1(0);
+        setGames2(0);
+      } else if (newGames1 >= 6 && games2 >= 5) {
+        if (newGames1 > games2 + 1) {
+          incSets1();
+          addPrevSets1(newGames1);
+          addPrevSets2(games2);
+          setGames1(0);
+          setGames2(0);
+        }
+      }
+
+      return newGames1;
+    });
   };
+  // need to figure out how to update games correctly when it reaches 6. currently will go past 6.
 
   const incSets1 = () => {
     setCurrSets1((set) => set + 1);
   };
 
-  const addPrevSets1 = () => {
+  const addPrevSets1 = (score) => {
     let newSet = [...prevSets1];
-    newSet.push(games1);
+    newSet.push(score);
     setPrevSets1(newSet);
   };
 
   const incPoints2 = () => {
-    if (points2 === 0) {
+    if (games1 === 6 && games2 === 6) {
+      setPoints2((prevPoints2) => {
+        const newPoints2 = prevPoints2 + 1;
+        if (newPoints2 >= 7 && newPoints2 > points1 + 1) {
+          incGames1();
+          setPoints1(0);
+          setPoints2(0);
+        }
+        return newPoints2;
+      });
+    } else if (points2 === 0) {
       setPoints2(15);
     } else if (points2 === 15) {
       setPoints2(30);
@@ -100,24 +141,42 @@ function App() {
   };
 
   const incGames2 = () => {
-    if (games2 < 6) {
-      setGames2((set) => set + 1);
-    } else {
-      incSets2();
-      addPrevSets1();
-      addPrevSets2();
-      setGames1(0);
-      setGames2(0);
-    }
+    setGames2((prevGames2) => {
+      const newGames2 = prevGames2 + 1;
+
+      if (newGames2 === 6 && games1 <= 4) {
+        incSets1();
+        addPrevSets1(games1);
+        addPrevSets2(newGames2);
+        setGames1(0);
+        setGames2(0);
+      } else if (newGames2 === 7 && games1 === 6) {
+        incSets1();
+        addPrevSets1(games1);
+        addPrevSets2(newGames2);
+        setGames1(0);
+        setGames2(0);
+      } else if (newGames2 >= 6 && games1 >= 5) {
+        if (newGames2 > games1 + 1) {
+          incSets1();
+          addPrevSets1(games1);
+          addPrevSets2(newGames2);
+          setGames1(0);
+          setGames2(0);
+        }
+      }
+
+      return newGames2;
+    });
   };
 
   const incSets2 = () => {
     setCurrSets2((set) => set + 1);
   };
 
-  const addPrevSets2 = () => {
+  const addPrevSets2 = (score) => {
     let newSet = [...prevSets2];
-    newSet.push(games2);
+    newSet.push(score);
     setPrevSets2(newSet);
   };
 
@@ -130,9 +189,9 @@ function App() {
     const y = event.clientY - rect.top - 5;
 
     const ballText = firstServeClicked
-      ? "F"
+      ? "I"
       : secondServeClicked
-      ? "S"
+      ? "II"
       : letClicked
       ? "L"
       : nonServeClicked

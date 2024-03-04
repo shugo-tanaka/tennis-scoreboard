@@ -1,7 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
+  // accessing data from API
+  useEffect(() => {
+    // Make an API request to FastAPI endpoint
+    fetch("http://127.0.0.1:8000/scoreboard_data")
+      .then((response) => response.json())
+      .then((data) => setScoreboardData(data))
+      .catch((error) => console.error("Error:", error));
+  }, []);
+
+  // initializing variables
+  const [scoreboardData, setScoreboardData] = useState([]);
   const [prevSets1, setPrevSets1] = useState([]);
   const [player1, setPlayer1] = useState("Koji Tanaka");
   const [currSets1, setCurrSets1] = useState(0);
@@ -15,6 +26,7 @@ function App() {
   const [points2, setPoints2] = useState(0);
 
   const [serveCircles, setServeCircles] = useState([]);
+  const [serveData, setServeData] = useState([]);
 
   const [firstServeClicked, setFirstServeClicked] = useState(false);
   const [firstServeColor, setFirstServeColor] = useState("white");
@@ -60,6 +72,14 @@ function App() {
       setPoints2(0);
     }
     setServeCircles([]);
+    setFirstServeClicked(true);
+    setFirstServeColor(firstServeClicked ? "white" : "grey");
+    setSecondServeClicked(false);
+    setLetClicked(false);
+    setNonServeClicked(false);
+    setSecondServeColor("white");
+    setLetColor("white");
+    setNonServeColor("white");
   };
 
   const incGames1 = () => {
@@ -138,6 +158,14 @@ function App() {
       setPoints1(0);
     }
     setServeCircles([]);
+    setFirstServeClicked(true);
+    setFirstServeColor(firstServeClicked ? "white" : "grey");
+    setSecondServeClicked(false);
+    setLetClicked(false);
+    setNonServeClicked(false);
+    setSecondServeColor("white");
+    setLetColor("white");
+    setNonServeColor("white");
   };
 
   const incGames2 = () => {
@@ -203,13 +231,19 @@ function App() {
     const newServeCircle = { x, y, ballText };
 
     setServeCircles([...serveCircles, newServeCircle]);
-    //create a pop-up that can record if click was first serve, second serve, let, last position of ball
+
+    setServeData([...serveData, newServeCircle]);
+    // TODO: above includes non-serves
   };
 
   const undo = () => {
     const tempServeCircles = [...serveCircles];
     tempServeCircles.pop();
+
+    const tempServeData = [...serveData];
+    tempServeData.pop();
     setServeCircles(tempServeCircles);
+    setServeData(tempServeData);
   };
 
   return (

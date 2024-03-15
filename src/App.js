@@ -5,22 +5,24 @@ function App() {
   // accessing data from API
   useEffect(() => {
     // Make an API request to FastAPI endpoint
-    fetch("http://127.0.0.1:8000/scoreboard_data")
+    fetch("http://127.0.0.1:8000/scoreboard_data/player_names/")
       .then((response) => response.json())
-      .then((data) => setScoreboardData(data))
+      .then((data) => {
+        setPlayer1(data[0]);
+        setPlayer2(data[1]);
+      })
       .catch((error) => console.error("Error:", error));
   }, []);
 
   // initializing variables
-  const [scoreboardData, setScoreboardData] = useState([]);
   const [prevSets1, setPrevSets1] = useState([]);
-  const [player1, setPlayer1] = useState("Koji Tanaka");
+  const [player1, setPlayer1] = useState([]);
   const [currSets1, setCurrSets1] = useState(0);
   const [games1, setGames1] = useState(0);
   const [points1, setPoints1] = useState(0);
 
   const [prevSets2, setPrevSets2] = useState([]);
-  const [player2, setPlayer2] = useState("Masa Tanaka");
+  const [player2, setPlayer2] = useState([]);
   const [currSets2, setCurrSets2] = useState(0);
   const [games2, setGames2] = useState(0);
   const [points2, setPoints2] = useState(0);
@@ -34,8 +36,6 @@ function App() {
   const [secondServeColor, setSecondServeColor] = useState("white");
   const [letClicked, setLetClicked] = useState(false);
   const [letColor, setLetColor] = useState("white");
-  const [nonServeClicked, setNonServeClicked] = useState(false);
-  const [nonServeColor, setNonServeColor] = useState("white");
 
   const incPoints1 = () => {
     // tie break scenario
@@ -76,10 +76,8 @@ function App() {
     setFirstServeColor(firstServeClicked ? "white" : "grey");
     setSecondServeClicked(false);
     setLetClicked(false);
-    setNonServeClicked(false);
     setSecondServeColor("white");
     setLetColor("white");
-    setNonServeColor("white");
   };
 
   const incGames1 = () => {
@@ -162,10 +160,8 @@ function App() {
     setFirstServeColor(firstServeClicked ? "white" : "grey");
     setSecondServeClicked(false);
     setLetClicked(false);
-    setNonServeClicked(false);
     setSecondServeColor("white");
     setLetColor("white");
-    setNonServeColor("white");
   };
 
   const incGames2 = () => {
@@ -173,20 +169,20 @@ function App() {
       const newGames2 = prevGames2 + 1;
 
       if (newGames2 === 6 && games1 <= 4) {
-        incSets1();
+        incSets2();
         addPrevSets1(games1);
         addPrevSets2(newGames2);
         setGames1(0);
         setGames2(0);
       } else if (newGames2 === 7 && games1 === 6) {
-        incSets1();
+        incSets2();
         addPrevSets1(games1);
         addPrevSets2(newGames2);
         setGames1(0);
         setGames2(0);
       } else if (newGames2 >= 6 && games1 >= 5) {
         if (newGames2 > games1 + 1) {
-          incSets1();
+          incSets2();
           addPrevSets1(games1);
           addPrevSets2(newGames2);
           setGames1(0);
@@ -222,8 +218,6 @@ function App() {
       ? "II"
       : letClicked
       ? "L"
-      : nonServeClicked
-      ? ""
       : "";
 
     // console.log("Ball Color:", ballColor);
@@ -267,13 +261,14 @@ function App() {
           <div className="player-name">{player1}</div>
           <div className="player-sets">{currSets1}</div>
           <div className="player-games">{games1}</div>
+          <div className="player-points">{points1}</div>
           <div
-            className="player-points"
+            className="add-points"
             onClick={() => {
               incPoints1();
             }}
           >
-            {points1}
+            +
           </div>
         </div>
         <div className="player2">
@@ -286,13 +281,14 @@ function App() {
           <div className="player-name">{player2}</div>
           <div className="player-sets">{currSets2}</div>
           <div className="player-games">{games2}</div>
+          <div className="player-points">{points2}</div>
           <div
-            className="player-points"
+            className="add-points"
             onClick={() => {
               incPoints2();
             }}
           >
-            {points2}
+            +
           </div>
         </div>
       </div>
@@ -329,10 +325,9 @@ function App() {
               setFirstServeColor(firstServeClicked ? "white" : "grey");
               setSecondServeClicked(false);
               setLetClicked(false);
-              setNonServeClicked(false);
+
               setSecondServeColor("white");
               setLetColor("white");
-              setNonServeColor("white");
             }}
             style={{
               backgroundColor: firstServeColor,
@@ -347,10 +342,9 @@ function App() {
               setSecondServeColor(secondServeClicked ? "white" : "grey");
               setFirstServeClicked(false);
               setLetClicked(false);
-              setNonServeClicked(false);
+
               setFirstServeColor("white");
               setLetColor("white");
-              setNonServeColor("white");
             }}
             style={{
               backgroundColor: secondServeColor,
@@ -365,10 +359,9 @@ function App() {
               setLetColor(letClicked ? "white" : "grey");
               setSecondServeClicked(false);
               setFirstServeClicked(false);
-              setNonServeClicked(false);
+
               setSecondServeColor("white");
               setFirstServeColor("white");
-              setNonServeColor("white");
             }}
             style={{
               backgroundColor: letColor,
@@ -376,26 +369,9 @@ function App() {
           >
             Let
           </div>
-          <div
-            className="non-serve"
-            onClick={() => {
-              setNonServeClicked(!nonServeClicked);
-              setNonServeColor(nonServeClicked ? "white" : "grey");
-              setSecondServeClicked(false);
-              setLetClicked(false);
-              setFirstServeClicked(false);
-              setSecondServeColor("white");
-              setLetColor("white");
-              setFirstServeColor("white");
-            }}
-            style={{
-              backgroundColor: nonServeColor,
-            }}
-          >
-            Non-Serve
-          </div>
+
           <div className="undo" onClick={undo}>
-            Undo
+            Undo Serve
           </div>
           {/* maybe insert pic of undo instead */}
         </div>

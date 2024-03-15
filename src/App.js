@@ -1,19 +1,9 @@
+//TO DO: there is currently a lag between points displayed and supabase update. Had similar issue with increasing games.
+
 import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
-  // accessing data from API
-  useEffect(() => {
-    // Make an API request to FastAPI endpoint
-    fetch("http://127.0.0.1:8000/scoreboard_data/player_names/")
-      .then((response) => response.json())
-      .then((data) => {
-        setPlayer1(data[0]);
-        setPlayer2(data[1]);
-      })
-      .catch((error) => console.error("Error:", error));
-  }, []);
-
   // initializing variables
   const [prevSets1, setPrevSets1] = useState([]);
   const [player1, setPlayer1] = useState([]);
@@ -36,6 +26,43 @@ function App() {
   const [secondServeColor, setSecondServeColor] = useState("white");
   const [letClicked, setLetClicked] = useState(false);
   const [letColor, setLetColor] = useState("white");
+
+  // accessing data from API
+  useEffect(() => {
+    // Make an API request to FastAPI endpoint
+    fetch("http://127.0.0.1:8000/player_names/")
+      .then((response) => response.json())
+      .then((output) => {
+        setPlayer1(output.data[0]["player_name"]);
+        setPlayer2(output.data[1]["player_name"]);
+      })
+      .catch((error) => console.error("Error:", error));
+  }, []);
+
+  const postData = {
+    points: [points1, points2],
+    games: [games1, games2],
+    sets: [currSets1, currSets2],
+    prev_sets: [prevSets1, prevSets2],
+  };
+
+  const updateSupa = () => {
+    fetch("http://127.0.0.1:8000/scoreboard_input", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response from the backend if needed
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
 
   const incPoints1 = () => {
     // tie break scenario
@@ -72,7 +99,7 @@ function App() {
       setPoints2(0);
     }
     setServeCircles([]);
-    setFirstServeClicked(true);
+    setFirstServeClicked(false);
     setFirstServeColor(firstServeClicked ? "white" : "grey");
     setSecondServeClicked(false);
     setLetClicked(false);
@@ -156,7 +183,7 @@ function App() {
       setPoints1(0);
     }
     setServeCircles([]);
-    setFirstServeClicked(true);
+    setFirstServeClicked(false);
     setFirstServeColor(firstServeClicked ? "white" : "grey");
     setSecondServeClicked(false);
     setLetClicked(false);
@@ -266,6 +293,7 @@ function App() {
             className="add-points"
             onClick={() => {
               incPoints1();
+              updateSupa();
             }}
           >
             +
@@ -286,6 +314,7 @@ function App() {
             className="add-points"
             onClick={() => {
               incPoints2();
+              updateSupa();
             }}
           >
             +

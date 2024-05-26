@@ -46,25 +46,29 @@ function App() {
     prev_sets: [prevSets1, prevSets2],
   };
 
-  const updateSupa = () => {
-    fetch("http://127.0.0.1:8000/scoreboard_input", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle the response from the backend if needed
-        console.log(data);
+  useEffect(() => {
+    const updateSupa = () => {
+      fetch("http://127.0.0.1:8000/scoreboard_input", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
+        .then((response) => response.json())
+        .then((data) => {
+          // Handle the response from the backend if needed
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
 
-  const incPoints1 = () => {
+    updateSupa();
+  }, [points1, points2]);
+
+  const incPoints1 = async () => {
     // tie break scenario
     if (games1 === 6 && games2 === 6) {
       setPoints1((prevPoints1) => {
@@ -291,9 +295,8 @@ function App() {
           <div className="player-points">{points1}</div>
           <div
             className="add-points"
-            onClick={() => {
+            onClick={async () => {
               incPoints1();
-              updateSupa();
             }}
           >
             +
@@ -314,7 +317,6 @@ function App() {
             className="add-points"
             onClick={() => {
               incPoints2();
-              updateSupa();
             }}
           >
             +

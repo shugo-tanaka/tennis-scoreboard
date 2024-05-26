@@ -23,9 +23,9 @@ function App() {
   const [firstServeClicked, setFirstServeClicked] = useState(false);
   const [firstServeColor, setFirstServeColor] = useState("white");
   const [secondServeClicked, setSecondServeClicked] = useState(false);
-  const [secondServeColor, setSecondServeColor] = useState("white");
+  const [secondServeColor, setSecondServeColor] = useState("grey");
   const [letClicked, setLetClicked] = useState(false);
-  const [letColor, setLetColor] = useState("white");
+  const [letColor, setLetColor] = useState("grey");
 
   // accessing data from API
   useEffect(() => {
@@ -104,11 +104,11 @@ function App() {
     }
     setServeCircles([]);
     setFirstServeClicked(false);
-    setFirstServeColor(firstServeClicked ? "white" : "grey");
+    setFirstServeColor(firstServeClicked ? "grey" : "white");
     setSecondServeClicked(false);
     setLetClicked(false);
-    setSecondServeColor("white");
-    setLetColor("white");
+    setSecondServeColor("grey");
+    setLetColor("grey");
   };
 
   const incGames1 = () => {
@@ -188,11 +188,11 @@ function App() {
     }
     setServeCircles([]);
     setFirstServeClicked(false);
-    setFirstServeColor(firstServeClicked ? "white" : "grey");
+    setFirstServeColor(firstServeClicked ? "grey" : "white");
     setSecondServeClicked(false);
     setLetClicked(false);
-    setSecondServeColor("white");
-    setLetColor("white");
+    setSecondServeColor("grey");
+    setLetColor("grey");
   };
 
   const incGames2 = () => {
@@ -293,14 +293,14 @@ function App() {
           <div className="player-sets">{currSets1}</div>
           <div className="player-games">{games1}</div>
           <div className="player-points">{points1}</div>
-          <div
+          {/* <div
             className="add-points"
             onClick={async () => {
               incPoints1();
             }}
           >
             +
-          </div>
+          </div> */}
         </div>
         <div className="player2">
           {/*player two*/}
@@ -313,14 +313,14 @@ function App() {
           <div className="player-sets">{currSets2}</div>
           <div className="player-games">{games2}</div>
           <div className="player-points">{points2}</div>
-          <div
+          {/* <div
             className="add-points"
             onClick={() => {
               incPoints2();
             }}
           >
             +
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="section2">
@@ -348,17 +348,34 @@ function App() {
             </div>
           ))}
         </div>
-        <div className="shot-type">
+        <div className="buttons">
+          <div
+            className="point-p1"
+            onClick={async () => {
+              incPoints1();
+            }}
+          >
+            Point {player1}
+          </div>
+          <div
+            className="point-p2"
+            onClick={async () => {
+              incPoints2();
+            }}
+          >
+            Point {player2}
+          </div>
+          <div className="serve-types">SERVE TYPES</div>
           <div
             className="first-serve"
             onClick={() => {
               setFirstServeClicked(!firstServeClicked);
-              setFirstServeColor(firstServeClicked ? "white" : "grey");
+              setFirstServeColor(firstServeClicked ? "grey" : "white");
               setSecondServeClicked(false);
               setLetClicked(false);
 
-              setSecondServeColor("white");
-              setLetColor("white");
+              setSecondServeColor("grey");
+              setLetColor("grey");
             }}
             style={{
               backgroundColor: firstServeColor,
@@ -370,12 +387,12 @@ function App() {
             className="second-serve"
             onClick={() => {
               setSecondServeClicked(!secondServeClicked);
-              setSecondServeColor(secondServeClicked ? "white" : "grey");
+              setSecondServeColor(secondServeClicked ? "grey" : "white");
               setFirstServeClicked(false);
               setLetClicked(false);
 
-              setFirstServeColor("white");
-              setLetColor("white");
+              setFirstServeColor("grey");
+              setLetColor("grey");
             }}
             style={{
               backgroundColor: secondServeColor,
@@ -387,12 +404,12 @@ function App() {
             className="let"
             onClick={() => {
               setLetClicked(!letClicked);
-              setLetColor(letClicked ? "white" : "grey");
+              setLetColor(letClicked ? "grey" : "white");
               setSecondServeClicked(false);
               setFirstServeClicked(false);
 
-              setSecondServeColor("white");
-              setFirstServeColor("white");
+              setSecondServeColor("grey");
+              setFirstServeColor("grey");
             }}
             style={{
               backgroundColor: letColor,

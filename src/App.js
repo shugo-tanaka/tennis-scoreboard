@@ -355,7 +355,7 @@ function App() {
               incPoints1();
             }}
           >
-            Point {player1}
+            Point {player1.split(" ")[0]} {player1.split(" ")[1][0]}.
           </div>
           <div
             className="point-p2"
@@ -363,7 +363,7 @@ function App() {
               incPoints2();
             }}
           >
-            Point {player2}
+            Point {player2.split(" ")[0]}
           </div>
           <div className="serve-types">SERVE TYPES</div>
           <div

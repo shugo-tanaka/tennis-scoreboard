@@ -1,4 +1,4 @@
-//TO DO: there is currently a lag between points displayed and supabase update. Had similar issue with increasing games.
+//TO DO: previous sets are not pulling to supabase probably because supabase column type is not matching up.
 
 import { useState, useEffect } from "react";
 import "./App.css";

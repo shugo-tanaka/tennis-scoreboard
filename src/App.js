@@ -1,4 +1,4 @@
-//TO DO: previous sets are not pulling to supabase probably because supabase column type is not matching up.
+//TO DO: need to figure out what the win conditions are + need to figure out OT format.
 
 import { useState, useEffect } from "react";
 import "./App.css";
@@ -69,8 +69,30 @@ function App() {
   }, [points1, points2]);
 
   const incPoints1 = async () => {
-    // tie break scenario
-    if (games1 === 6 && games2 === 6) {
+    // stop being able to be pushed once match is won
+    if (currSets1 == 2 || currSets2 == 2) {
+      return null;
+    }
+
+    // tie break replacement for set 3
+    else if (currSets1 === 1 && currSets2 === 1) {
+      setPoints1((prevPoints1) => {
+        const newPoints1 = prevPoints1 + 1;
+        if (newPoints1 >= 10 && newPoints1 > points2 + 1) {
+          incSets1();
+          setPoints2(0);
+          setPoints1(0);
+          setGames1(0);
+          setGames2(0);
+          addPrevSets1(newPoints1);
+          addPrevSets2(points2);
+        }
+        return newPoints1;
+      });
+    }
+
+    // tie break scenario for first two sets
+    else if (games1 === 6 && games2 === 6) {
       setPoints1((prevPoints1) => {
         const newPoints1 = prevPoints1 + 1;
         if (newPoints1 >= 7 && newPoints1 > points2 + 1) {
@@ -103,8 +125,8 @@ function App() {
       setPoints2(0);
     }
     setServeCircles([]);
-    setFirstServeClicked(false);
-    setFirstServeColor(firstServeClicked ? "grey" : "white");
+    setFirstServeClicked(true);
+    setFirstServeColor(firstServeClicked ? "white" : "grey");
     setSecondServeClicked(false);
     setLetClicked(false);
     setSecondServeColor("grey");
@@ -154,13 +176,29 @@ function App() {
   };
 
   const incPoints2 = () => {
-    if (games1 === 6 && games2 === 6) {
+    if (currSets1 == 2 || currSets2 == 2) {
+      return null;
+    } else if (currSets2 === 1 && currSets1 === 1) {
+      setPoints2((prevPoints2) => {
+        const newPoints2 = prevPoints2 + 1;
+        if (newPoints2 >= 10 && newPoints2 > points1 + 1) {
+          incSets2();
+          setPoints2(0);
+          setPoints1(0);
+          setGames1(0);
+          setGames2(0);
+        }
+        return newPoints2;
+      });
+    } else if (games1 === 6 && games2 === 6) {
       setPoints2((prevPoints2) => {
         const newPoints2 = prevPoints2 + 1;
         if (newPoints2 >= 7 && newPoints2 > points1 + 1) {
           incGames1();
           setPoints1(0);
           setPoints2(0);
+          addPrevSets1(points1);
+          addPrevSets2(newPoints2);
         }
         return newPoints2;
       });
@@ -187,8 +225,8 @@ function App() {
       setPoints1(0);
     }
     setServeCircles([]);
-    setFirstServeClicked(false);
-    setFirstServeColor(firstServeClicked ? "grey" : "white");
+    setFirstServeClicked(true);
+    setFirstServeColor(firstServeClicked ? "white" : "grey");
     setSecondServeClicked(false);
     setLetClicked(false);
     setSecondServeColor("grey");
@@ -355,7 +393,7 @@ function App() {
               incPoints1();
             }}
           >
-            Point {player1.split(" ")[0]} {player1.split(" ")[1][0]}.
+            Point {player1 /*.split(" ")[0]} {player1.split(" ")[1][0]*/}.
           </div>
           <div
             className="point-p2"
@@ -363,7 +401,7 @@ function App() {
               incPoints2();
             }}
           >
-            Point {player2.split(" ")[0]}
+            Point {player2 /*.split(" ")[0]*/}
           </div>
           <div className="serve-types">SERVE TYPES</div>
           <div

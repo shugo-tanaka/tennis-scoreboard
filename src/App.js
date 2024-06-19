@@ -1,4 +1,5 @@
-//TO DO: need to figure out what the win conditions are + need to figure out OT format.
+//TO DO: need to be able to display that the game is finished
+//changing the match info changes the text for all subsections. need to create more variables, and handleInputChange functions for each. Maybe connect the input to some other variables like player1.
 
 import { useState, useEffect } from "react";
 import "./App.css";
@@ -20,12 +21,17 @@ function App() {
   const [serveCircles, setServeCircles] = useState([]);
   const [serveData, setServeData] = useState([]);
 
+  // variables for the serve buttons
   const [firstServeClicked, setFirstServeClicked] = useState(false);
   const [firstServeColor, setFirstServeColor] = useState("white");
   const [secondServeClicked, setSecondServeClicked] = useState(false);
   const [secondServeColor, setSecondServeColor] = useState("grey");
   const [letClicked, setLetClicked] = useState(false);
   const [letColor, setLetColor] = useState("grey");
+
+  //variables for data input pop-up
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   // accessing data from API
   useEffect(() => {
@@ -309,9 +315,68 @@ function App() {
     setServeData(tempServeData);
   };
 
+  //pop-up related functions
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Input value:", inputValue);
+    setIsModalOpen(false);
+  };
+
   return (
     <div>
       <h1 className="tennis-score">Tennis Score</h1>
+      <div className="popup">
+        <button onClick={handleOpenModal}>Set Match Information</button>
+        {isModalOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={handleCloseModal}>
+                &times;
+              </span>
+              <form onSubmit={handleSubmit}>
+                <label>
+                  Date MM/DD/YYYY
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                  />
+                  Start Time
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                  />
+                  Player 1 Name
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                  />
+                  Player 2 Name
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                  />
+                </label>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="data-table">
         <div className="labels">
           <div className="previous-sets">Previous Sets</div>

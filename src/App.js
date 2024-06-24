@@ -1,4 +1,5 @@
 //TO DO: need to be able to display that the game is finished
+//undo function still needs work. The if statement is not catching. Maybe output is null.
 //changing the match info changes the text for all subsections. need to create more variables, and handleInputChange functions for each. Maybe connect the input to some other variables like player1.
 
 import { useState, useEffect } from "react";
@@ -45,6 +46,35 @@ function App() {
       .catch((error) => console.error("Error:", error));
   }, []);
 
+  const undoPoint = () => {
+    fetch("http://127.0.0.1:8000/undo_score/")
+      .then((response) => response.json())
+      .then((output) => {
+        if (output.data) {
+          setPoints1(output.data["points_1"]);
+          setPoints2(output.data["points_2"]);
+          setGames1(output.data["games_1"]);
+          setGames2(output.data["games_2"]);
+          setCurrSets1(output.data["curr_sets_1"]);
+          setCurrSets2(output.data["curr_sets_2"]);
+          setPrevSets1(output.data["prev_sets_1"]);
+          setPrevSets2(output.data["prev_sets_2"]);
+        } else {
+          setPoints1(0);
+          setPoints2(0);
+          setGames1(0);
+          setGames2(0);
+          setCurrSets1(0);
+          setCurrSets2(0);
+          setPrevSets1([]);
+          setPrevSets2([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   const postData = {
     points: [points1, points2],
     games: [games1, games2],
@@ -76,7 +106,7 @@ function App() {
 
   const incPoints1 = async () => {
     // stop being able to be pushed once match is won
-    if (currSets1 == 2 || currSets2 == 2) {
+    if (currSets1 === 2 || currSets2 === 2) {
       return null;
     }
 
@@ -182,7 +212,7 @@ function App() {
   };
 
   const incPoints2 = () => {
-    if (currSets1 == 2 || currSets2 == 2) {
+    if (currSets1 === 2 || currSets2 === 2) {
       return null;
     } else if (currSets2 === 1 && currSets1 === 1) {
       setPoints2((prevPoints2) => {
@@ -467,6 +497,14 @@ function App() {
             }}
           >
             Point {player2 /*.split(" ")[0]*/}
+          </div>
+          <div
+            className="undo-point"
+            onClick={() => {
+              undoPoint();
+            }}
+          >
+            Undo Point
           </div>
           <div className="serve-types">SERVE TYPES</div>
           <div

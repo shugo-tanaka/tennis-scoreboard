@@ -343,6 +343,13 @@ function App() {
   };
 
   //pop-up related functions
+  const [inputValues, setInputValues] = useState({
+    date: "",
+    startTime: "",
+    player1Name: "",
+    player2Name: "",
+  });
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -367,39 +374,55 @@ function App() {
       <div className="popup">
         <button onClick={handleOpenModal}>Set Match Information</button>
         {isModalOpen && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={handleCloseModal}>
-                &times;
-              </span>
-              <form onSubmit={handleSubmit}>
-                <label>
-                  Date MM/DD/YYYY
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                  />
-                  Start Time
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                  />
-                  Player 1 Name
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                  />
-                  Player 2 Name
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                  />
-                </label>
-              </form>
+          <div className="modal-overlay">
+            <div className="modal">
+              <div className="popup-top">
+                <div className="popup-name">Match Information</div>
+                <span className="close" onClick={handleCloseModal}>
+                  &times;
+                </span>
+              </div>
+              <div className="modal-content">
+                <form onSubmit={handleSubmit}>
+                  <label>
+                    Date MM/DD/YYYY
+                    <input
+                      type="text"
+                      name="date"
+                      value={inputValues.date}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+                  <label>
+                    Start Time
+                    <input
+                      type="text"
+                      name="startTime"
+                      value={inputValues.startTime}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+                  <label>
+                    Player 1 Name
+                    <input
+                      type="text"
+                      name="player1Name"
+                      value={inputValues.player1Name}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+                  <label>
+                    Player 2 Name
+                    <input
+                      type="text"
+                      name="player2Name"
+                      value={inputValues.player2Name}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+                  <button type="submit">Submit</button>
+                </form>
+              </div>
             </div>
           </div>
         )}

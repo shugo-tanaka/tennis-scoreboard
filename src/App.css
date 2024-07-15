@@ -115,6 +115,7 @@
   position: relative;
   overflow: hidden;
   margin-top: 10px;
+  cursor: pointer;
   /* margin-left: 20%;
   margin-right: 20%; */
 }
@@ -154,4 +155,20 @@
   background-color: white;
   border-radius: 5px;
   font-size: 16px;
+  cursor: pointer;
+}
+
+.point-p1:hover,
+.point-p2:hover,
+.undo-point:hover,
+.first-serve:hover,
+.second-serve:hover,
+.let:hover,
+.undo:hover {
+  scale: 90%;
+  transition-property: all;
+
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+  transition-duration: 150ms;
 }

@@ -24,11 +24,15 @@ function App() {
 
   // variables for the serve buttons
   const [firstServeClicked, setFirstServeClicked] = useState(false);
-  const [firstServeColor, setFirstServeColor] = useState("white");
+  // const [firstServeColor, setFirstServeColor] = useState("white");
+  const [firstServeScale, setFirstServeScale] = useState("90%");
   const [secondServeClicked, setSecondServeClicked] = useState(false);
-  const [secondServeColor, setSecondServeColor] = useState("grey");
+  // const [secondServeColor, setSecondServeColor] = useState("grey");
+  const [secondServeScale, setSecondServeScale] = useState("100%");
   const [letClicked, setLetClicked] = useState(false);
-  const [letColor, setLetColor] = useState("grey");
+  // const [letColor, setLetColor] = useState("grey");
+  const [letScale, setLetScale] = useState("100%");
+  const [isPointInc, setIsPointInc] = useState(1);
 
   //variables for data input pop-up
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,25 +54,16 @@ function App() {
     fetch("http://127.0.0.1:8000/undo_score/")
       .then((response) => response.json())
       .then((output) => {
-        if (output.data) {
-          setPoints1(output.data["points_1"]);
-          setPoints2(output.data["points_2"]);
-          setGames1(output.data["games_1"]);
-          setGames2(output.data["games_2"]);
-          setCurrSets1(output.data["curr_sets_1"]);
-          setCurrSets2(output.data["curr_sets_2"]);
-          setPrevSets1(output.data["prev_sets_1"]);
-          setPrevSets2(output.data["prev_sets_2"]);
-        } else {
-          setPoints1(0);
-          setPoints2(0);
-          setGames1(0);
-          setGames2(0);
-          setCurrSets1(0);
-          setCurrSets2(0);
-          setPrevSets1([]);
-          setPrevSets2([]);
-        }
+        console.log(output.data[output.data.length - 1]);
+        const outputData = output.data[output.data.length - 1];
+        setPoints1(outputData["points_1"]);
+        setPoints2(outputData["points_2"]);
+        setGames1(outputData["games_1"]);
+        setGames2(outputData["games_2"]);
+        setCurrSets1(outputData["curr_sets_1"]);
+        setCurrSets2(outputData["curr_sets_2"]);
+        setPrevSets1(outputData["prev_sets_1"]);
+        setPrevSets2(outputData["prev_sets_2"]);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -102,7 +97,7 @@ function App() {
     };
 
     updateSupa();
-  }, [points1, points2]);
+  }, [isPointInc]);
 
   const incPoints1 = async () => {
     // stop being able to be pushed once match is won
@@ -162,11 +157,12 @@ function App() {
     }
     setServeCircles([]);
     setFirstServeClicked(true);
-    setFirstServeColor(firstServeClicked ? "white" : "grey");
+    setFirstServeScale(firstServeClicked ? "90%" : "100%");
     setSecondServeClicked(false);
     setLetClicked(false);
-    setSecondServeColor("grey");
-    setLetColor("grey");
+    setSecondServeScale("100%");
+    setLetScale("100%");
+    setIsPointInc(isPointInc * -1);
   };
 
   const incGames1 = () => {
@@ -262,11 +258,12 @@ function App() {
     }
     setServeCircles([]);
     setFirstServeClicked(true);
-    setFirstServeColor(firstServeClicked ? "white" : "grey");
+    setFirstServeScale(firstServeClicked ? "90%" : "100%");
     setSecondServeClicked(false);
     setLetClicked(false);
-    setSecondServeColor("grey");
-    setLetColor("grey");
+    setSecondServeScale("100%");
+    setLetScale("100%");
+    setIsPointInc(isPointInc * -1);
   };
 
   const incGames2 = () => {
@@ -510,16 +507,16 @@ function App() {
           <div
             className="first-serve"
             onClick={() => {
-              setFirstServeClicked(!firstServeClicked);
-              setFirstServeColor(firstServeClicked ? "grey" : "white");
+              setFirstServeClicked(true);
+              setFirstServeScale("90%"); //firstServeClicked ? "90%" : "100%");
               setSecondServeClicked(false);
               setLetClicked(false);
 
-              setSecondServeColor("grey");
-              setLetColor("grey");
+              setSecondServeScale("100%");
+              setLetScale("100%");
             }}
             style={{
-              backgroundColor: firstServeColor,
+              scale: firstServeScale,
             }}
           >
             First Serve
@@ -527,16 +524,16 @@ function App() {
           <div
             className="second-serve"
             onClick={() => {
-              setSecondServeClicked(!secondServeClicked);
-              setSecondServeColor(secondServeClicked ? "grey" : "white");
+              setSecondServeClicked(true);
+              setSecondServeScale("90%"); //secondServeClicked ? "90%" : "100%");
               setFirstServeClicked(false);
               setLetClicked(false);
 
-              setFirstServeColor("grey");
-              setLetColor("grey");
+              setFirstServeScale("100%");
+              setLetScale("100%");
             }}
             style={{
-              backgroundColor: secondServeColor,
+              scale: secondServeScale,
             }}
           >
             Second Serve
@@ -544,16 +541,16 @@ function App() {
           <div
             className="let"
             onClick={() => {
-              setLetClicked(!letClicked);
-              setLetColor(letClicked ? "grey" : "white");
+              setLetClicked(true); //!letClicked);
+              setLetScale("90%"); //letClicked ? "90%" : "100%");
               setSecondServeClicked(false);
               setFirstServeClicked(false);
 
-              setSecondServeColor("grey");
-              setFirstServeColor("grey");
+              setSecondServeScale("100%");
+              setFirstServeScale("100%");
             }}
             style={{
-              backgroundColor: letColor,
+              scale: letScale,
             }}
           >
             Let

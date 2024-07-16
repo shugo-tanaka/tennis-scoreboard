@@ -1,6 +1,10 @@
 //TO DO: need to be able to display that the game is finished
 //undo function still needs work. The if statement is not catching. Maybe output is null.
 //changing the match info changes the text for all subsections. need to create more variables, and handleInputChange functions for each. Maybe connect the input to some other variables like player1.
+// need to be able to do error handling for inputing match information.
+// what if there are multiple matches in a day - how do you distinguish games if not opponent name?
+// make point Koji Tanaka button into point K. Tanaka.
+// send inputValues to supabase. Pull player Name from supabase?
 
 import { useState, useEffect } from "react";
 import "./App.css";
@@ -23,7 +27,7 @@ function App() {
   const [serveData, setServeData] = useState([]);
 
   // variables for the serve buttons
-  const [firstServeClicked, setFirstServeClicked] = useState(false);
+  const [firstServeClicked, setFirstServeClicked] = useState(true);
   // const [firstServeColor, setFirstServeColor] = useState("white");
   const [firstServeScale, setFirstServeScale] = useState("90%");
   const [secondServeClicked, setSecondServeClicked] = useState(false);
@@ -37,6 +41,7 @@ function App() {
   //variables for data input pop-up
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [submitClicked, setSubmitClicked] = useState(-1);
 
   // accessing data from API
   useEffect(() => {
@@ -344,11 +349,35 @@ function App() {
 
   //pop-up related functions
   const [inputValues, setInputValues] = useState({
-    date: "",
+    date: new Date().toLocaleDateString(),
     startTime: "",
-    player1Name: "",
-    player2Name: "",
+    player1Name: "Koji Tanaka",
+    player2Name: "Player 2",
   });
+
+  useEffect(() => {
+    const updateSupaMatch = () => {
+      fetch("http://127.0.0.1:8000/match_data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputValues),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
+    updateSupaMatch();
+  }, [submitClicked]);
+
+  const clickSubmit = () => {
+    setSubmitClicked(submitClicked * -1);
+  };
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -359,7 +388,11 @@ function App() {
   };
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    const { name, value } = e.target;
+    setInputValues((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -372,7 +405,9 @@ function App() {
     <div>
       <h1 className="tennis-score">Tennis Score</h1>
       <div className="popup">
-        <button onClick={handleOpenModal}>Set Match Information</button>
+        <button className="set-match-info" onClick={handleOpenModal}>
+          Set Match Information
+        </button>
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal">
@@ -387,21 +422,23 @@ function App() {
                   <label>
                     Date MM/DD/YYYY
                     <input
-                      type="text"
+                      type="Date"
                       name="date"
                       value={inputValues.date}
                       onChange={handleInputChange}
                     />
                   </label>
-                  <label>
+                  {/*<label>
+                    {" "}
+                    {/*maybe put something other than start time to categorize it
                     Start Time
                     <input
-                      type="text"
+                      type="Text"
                       name="startTime"
                       value={inputValues.startTime}
                       onChange={handleInputChange}
                     />
-                  </label>
+                  </label> */}
                   <label>
                     Player 1 Name
                     <input
@@ -420,7 +457,13 @@ function App() {
                       onChange={handleInputChange}
                     />
                   </label>
-                  <button type="submit">Submit</button>
+                  <button
+                    className="submit-button"
+                    type="submit"
+                    onClick={clickSubmit}
+                  >
+                    Submit
+                  </button>
                 </form>
               </div>
             </div>

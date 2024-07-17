@@ -39,7 +39,7 @@ function App() {
   const [isPointInc, setIsPointInc] = useState(1);
 
   //variables for data input pop-up
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true); //popup now starts off open
   const [inputValue, setInputValue] = useState("");
   const [submitClicked, setSubmitClicked] = useState(-1);
 
@@ -75,11 +75,19 @@ function App() {
       });
   };
 
+  const [inputValues, setInputValues] = useState({
+    date: new Date().toLocaleDateString(),
+    startTime: "",
+    player1Name: "Koji Tanaka",
+    player2Name: "Player 2",
+  });
+
   const postData = {
     points: [points1, points2],
     games: [games1, games2],
     sets: [currSets1, currSets2],
     prev_sets: [prevSets1, prevSets2],
+    player_name: [inputValues.player1Name, inputValues.player2Name],
   };
 
   useEffect(() => {
@@ -348,12 +356,6 @@ function App() {
   };
 
   //pop-up related functions
-  const [inputValues, setInputValues] = useState({
-    date: new Date().toLocaleDateString(),
-    startTime: "",
-    player1Name: "Koji Tanaka",
-    player2Name: "Player 2",
-  });
 
   useEffect(() => {
     const updateSupaMatch = () => {

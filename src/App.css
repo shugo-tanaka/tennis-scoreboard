@@ -235,11 +235,11 @@
 .point-p1:hover,
 .point-p2:hover,
 .undo-point:hover,
-.first-serve:hover,
-.second-serve:hover,
-.let:hover,
+.first-serve:hover:not(.clicked),
+.second-serve:hover:not(.clicked),
+.let:hover:not(.clicked),
 .undo:hover {
-  scale: 90%;
+  transform: scale(0.9);
   transition-property: all;
 
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);

@@ -5,6 +5,7 @@
 // what if there are multiple matches in a day - how do you distinguish games if not opponent name?
 // make point Koji Tanaka button into point K. Tanaka.
 // send inputValues to supabase. Pull player Name from supabase?
+// if button is clicked, should it not scale? webdesign question.
 
 import { useState, useEffect } from "react";
 import "./App.css";
@@ -12,13 +13,13 @@ import "./App.css";
 function App() {
   // initializing variables
   const [prevSets1, setPrevSets1] = useState([]);
-  const [player1, setPlayer1] = useState([]);
+  const [player1, setPlayer1] = useState("Koji Tanaka");
   const [currSets1, setCurrSets1] = useState(0);
   const [games1, setGames1] = useState(0);
   const [points1, setPoints1] = useState(0);
 
   const [prevSets2, setPrevSets2] = useState([]);
-  const [player2, setPlayer2] = useState([]);
+  const [player2, setPlayer2] = useState("Player 2");
   const [currSets2, setCurrSets2] = useState(0);
   const [games2, setGames2] = useState(0);
   const [points2, setPoints2] = useState(0);
@@ -49,8 +50,8 @@ function App() {
     fetch("http://127.0.0.1:8000/player_names/")
       .then((response) => response.json())
       .then((output) => {
-        setPlayer1(output.data[0]["player_name"]);
-        setPlayer2(output.data[1]["player_name"]);
+        setPlayer1(output[0]);
+        setPlayer2(output[1]);
       })
       .catch((error) => console.error("Error:", error));
   }, []);
@@ -553,7 +554,7 @@ function App() {
               incPoints1();
             }}
           >
-            Point {player1 /*.split(" ")[0]} {player1.split(" ")[1][0]*/}.
+            + {player1.split(" ")[0][0]} {player1.split(" ")[1]}
           </div>
           <div
             className="point-p2"
@@ -561,7 +562,7 @@ function App() {
               incPoints2();
             }}
           >
-            Point {player2 /*.split(" ")[0]*/}
+            + {player2.split(" ")[0][0]} {player2.split(" ")[1]}
           </div>
           <div
             className="undo-point"
@@ -573,7 +574,7 @@ function App() {
           </div>
           <div className="serve-types">SERVE TYPES</div>
           <div
-            className="first-serve"
+            className={`first-serve ${firstServeClicked ? "clicked" : ""}`}
             onClick={() => {
               setFirstServeClicked(true);
               setFirstServeScale("90%"); //firstServeClicked ? "90%" : "100%");
@@ -587,10 +588,10 @@ function App() {
               scale: firstServeScale,
             }}
           >
-            First Serve
+            1st Serve
           </div>
           <div
-            className="second-serve"
+            className={`second-serve ${secondServeClicked ? "clicked" : ""}`}
             onClick={() => {
               setSecondServeClicked(true);
               setSecondServeScale("90%"); //secondServeClicked ? "90%" : "100%");
@@ -604,10 +605,10 @@ function App() {
               scale: secondServeScale,
             }}
           >
-            Second Serve
+            2nd Serve
           </div>
           <div
-            className="let"
+            className={`let ${letClicked ? "clicked" : ""}`}
             onClick={() => {
               setLetClicked(true); //!letClicked);
               setLetScale("90%"); //letClicked ? "90%" : "100%");

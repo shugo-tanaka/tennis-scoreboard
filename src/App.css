@@ -5,9 +5,53 @@
   color: white;
 }
 
-.set-match-info {
-  margin-left: 67.5%;
+.set-match-info,
+.point-p1,
+.point-p2,
+.undo-point,
+.first-serve,
+.second-serve,
+.let,
+.undo {
+  /*margin-left: 67.5%;*/
   margin-bottom: 10px;
+  align-items: center;
+  appearance: none;
+  background-color: #fff;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+    rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
+  box-sizing: border-box;
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 35px;
+  justify-content: center;
+  letter-spacing: 0.25px;
+  line-height: normal;
+  /*max-width: 100%;*/
+  overflow: visible;
+  padding: 2px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 130px;
+  will-change: transform, opacity;
+  z-index: 0;
+}
+
+.set-match-info {
+  margin-left: 68.5%;
 }
 
 /* pop up stuff */
@@ -209,11 +253,12 @@
 }
 
 .serve-types {
+  margin-bottom: 10px;
   color: white;
   font-weight: bold;
 }
 
-.point-p1,
+/* .point-p1,
 .point-p2,
 .undo-point,
 .first-serve,
@@ -222,27 +267,32 @@
 .non-serve,
 .undo {
   margin-bottom: 10px; /*margin adds space outside div, padding adds space inside div*/
-  margin-top: 10px;
+/*margin-top: 10px;
   display: flex;
   justify-content: center; /*align horizontally*/
-  align-items: center;
+/*align-items: center;
   background-color: white;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
 }
-
+*/
 .point-p1:hover,
 .point-p2:hover,
 .undo-point:hover,
 .first-serve:hover:not(.clicked),
 .second-serve:hover:not(.clicked),
 .let:hover:not(.clicked),
-.undo:hover {
+.undo:hover,
+.set-match-info:hover {
   transform: scale(0.9);
   transition-property: all;
 
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
   transition-duration: 150ms;
+}
+
+.first-serve.clicked {
+  outline-width: thick;
 }

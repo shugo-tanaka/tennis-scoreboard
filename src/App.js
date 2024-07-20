@@ -1,11 +1,8 @@
 //TO DO: need to be able to display that the game is finished
-//undo function still needs work. The if statement is not catching. Maybe output is null.
-//changing the match info changes the text for all subsections. need to create more variables, and handleInputChange functions for each. Maybe connect the input to some other variables like player1.
 // need to be able to do error handling for inputing match information.
 // what if there are multiple matches in a day - how do you distinguish games if not opponent name?
-// make point Koji Tanaka button into point K. Tanaka.
-// send inputValues to supabase. Pull player Name from supabase?
 // if button is clicked, should it not scale? webdesign question.
+// convert buttons in buttons instead of divs, if there are better options for customization.
 
 import { useState, useEffect } from "react";
 import "./App.css";
@@ -548,32 +545,32 @@ function App() {
           ))}
         </div>
         <div className="buttons">
-          <div
+          <button
             className="point-p1"
             onClick={async () => {
               incPoints1();
             }}
           >
             + {player1.split(" ")[0][0]} {player1.split(" ")[1]}
-          </div>
-          <div
+          </button>
+          <button
             className="point-p2"
             onClick={async () => {
               incPoints2();
             }}
           >
             + {player2.split(" ")[0][0]} {player2.split(" ")[1]}
-          </div>
-          <div
+          </button>
+          <button
             className="undo-point"
             onClick={() => {
               undoPoint();
             }}
           >
             Undo Point
-          </div>
+          </button>
           <div className="serve-types">SERVE TYPES</div>
-          <div
+          <button
             className={`first-serve ${firstServeClicked ? "clicked" : ""}`}
             onClick={() => {
               setFirstServeClicked(true);
@@ -589,8 +586,8 @@ function App() {
             }}
           >
             1st Serve
-          </div>
-          <div
+          </button>
+          <button
             className={`second-serve ${secondServeClicked ? "clicked" : ""}`}
             onClick={() => {
               setSecondServeClicked(true);
@@ -606,8 +603,8 @@ function App() {
             }}
           >
             2nd Serve
-          </div>
-          <div
+          </button>
+          <button
             className={`let ${letClicked ? "clicked" : ""}`}
             onClick={() => {
               setLetClicked(true); //!letClicked);
@@ -623,11 +620,11 @@ function App() {
             }}
           >
             Let
-          </div>
+          </button>
 
-          <div className="undo" onClick={undo}>
+          <button className="undo" onClick={undo}>
             Undo Serve
-          </div>
+          </button>
           {/* maybe insert pic of undo instead */}
         </div>
       </div>

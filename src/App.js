@@ -376,6 +376,8 @@ function App() {
   }, [submitClicked]);
 
   const clickSubmit = () => {
+    setPlayer1(inputValues.player1Name);
+    setPlayer2(inputValues.player2Name);
     setSubmitClicked(submitClicked * -1);
   };
 

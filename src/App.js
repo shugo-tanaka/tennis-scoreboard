@@ -2,7 +2,7 @@
 // need to be able to do error handling for inputing match information.
 // what if there are multiple matches in a day - how do you distinguish games if not opponent name?
 // if button is clicked, should it not scale? webdesign question.
-// convert buttons in buttons instead of divs, if there are better options for customization.
+//if date is not inputted, submit should throw an error message.
 
 import { useState, useEffect } from "react";
 import "./App.css";
@@ -75,7 +75,7 @@ function App() {
 
   const [inputValues, setInputValues] = useState({
     date: new Date().toLocaleDateString(),
-    startTime: "",
+    // startTime: "",
     player1Name: "Koji Tanaka",
     player2Name: "Player 2",
   });
@@ -86,6 +86,7 @@ function App() {
     sets: [currSets1, currSets2],
     prev_sets: [prevSets1, prevSets2],
     player_name: [inputValues.player1Name, inputValues.player2Name],
+    date: inputValues.date,
   };
 
   useEffect(() => {
@@ -405,7 +406,9 @@ function App() {
 
   return (
     <div>
-      <h1 className="tennis-score">Tennis Score</h1>
+      <h1 className="tennis-score">
+        {inputValues.date} {player1} vs {player2}
+      </h1>
       <div className="popup">
         <button className="set-match-info" onClick={handleOpenModal}>
           Set Match Information

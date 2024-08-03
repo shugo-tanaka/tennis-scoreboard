@@ -1,8 +1,12 @@
-//TO DO: need to be able to display that the game is finished
+// TO DO:
+// need to be able to display that the game is finished. Created but add to the observer side as opposed to the score keeping side.
 // need to be able to do error handling for inputing match information.
 // what if there are multiple matches in a day - how do you distinguish games if not opponent name?
 // if button is clicked, should it not scale? webdesign question.
-//if date is not inputted, submit should throw an error message.
+// if date is not inputted, submit should throw an error message. Or will there always be the opponent name information?
+// need to be able to show what side Koji is on, etc. Maybe create a button that switches sides?
+// Need to also show which side he is serving to.
+// need to convert it to mobile.
 
 import { useState, useEffect } from "react";
 import "./App.css";
@@ -40,6 +44,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(true); //popup now starts off open
   const [inputValue, setInputValue] = useState("");
   const [submitClicked, setSubmitClicked] = useState(-1);
+  const [winner, setWinner] = useState("");
 
   // accessing data from API
   useEffect(() => {
@@ -114,6 +119,14 @@ function App() {
   const incPoints1 = async () => {
     // stop being able to be pushed once match is won
     if (currSets1 === 2 || currSets2 === 2) {
+      if (currSets1 > currSets2) {
+        setWinner(player1);
+      } else {
+        setWinner(player2);
+      }
+
+      setIsEndResultOpen(true);
+
       return null;
     }
 
@@ -207,7 +220,6 @@ function App() {
       return newGames1;
     });
   };
-  // need to figure out how to update games correctly when it reaches 6. currently will go past 6.
 
   const incSets1 = () => {
     setCurrSets1((set) => set + 1);
@@ -404,11 +416,33 @@ function App() {
     setIsModalOpen(false);
   };
 
+  //end result pop up related
+
+  const [isEndResultOpen, setIsEndResultOpen] = useState(false);
+
+  const handleCloseEndReult = () => {
+    setIsEndResultOpen(false);
+  };
+
   return (
     <div>
       <h1 className="tennis-score">
         {inputValues.date} {player1} vs {player2}
       </h1>
+      {/* <div className="end-result"> add this for the observer side!!!
+        {isEndResultOpen && (
+          <div className="end-result-overlay">
+            <div className="end-result-modal">
+              <div className="end-result-content">
+                <div className="winner">Winner: {winner}</div>
+                <div className="winner-sets">
+                  {currSets1} : {currSets2}{" "}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>*/}
       <div className="popup">
         <button className="set-match-info" onClick={handleOpenModal}>
           Set Match Information
@@ -529,7 +563,7 @@ function App() {
           <img
             src="/tennis-court-diagram.jpg"
             alt="Tennis Court"
-            style={{ width: "75%", height: "75%" }}
+            style={{ width: "90%", height: "90%" }}
           />
           {serveCircles.map((circle, index) => (
             <div
@@ -568,7 +602,7 @@ function App() {
           </button>
           <button
             className="undo-point"
-            onClick={() => {
+            onClick={async () => {
               undoPoint();
             }}
           >

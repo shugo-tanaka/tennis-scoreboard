@@ -55,11 +55,13 @@
 }
 
 /* pop up stuff */
-.popup {
+.popup,
+.end-result {
   position: relative;
 }
 
-.modal-overlay {
+.modal-overlay,
+.end-result-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -72,7 +74,8 @@
   z-index: 9999;
 }
 
-.modal {
+.modal,
+.end-result-modal {
   background-color: white;
   border-radius: 8px;
   padding: 20px;
@@ -81,8 +84,19 @@
   overflow-y: auto; /* Enable scrolling if modal content exceeds the viewport */
 }
 
-.modal label {
+.modal label,
+.end-result-modal label {
   display: block;
+}
+
+.winner,
+.winner-sets {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.winner-sets {
+  margin-top: 10px;
 }
 
 .modal input {
@@ -253,6 +267,7 @@
 }
 
 .serve-types {
+  margin-left: 15%;
   margin-bottom: 10px;
   color: white;
   font-weight: bold;

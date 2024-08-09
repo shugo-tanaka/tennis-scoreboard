@@ -1,0 +1,315 @@
+/* media queries */
+
+.tennis-score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.set-match-info,
+.point-p1,
+.point-p2,
+.undo-point,
+.first-serve,
+.second-serve,
+.let,
+.undo {
+  /*margin-left: 67.5%;*/
+  margin-bottom: 10px;
+  align-items: center;
+  appearance: none;
+  background-color: #fff;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+    rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
+  box-sizing: border-box;
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 35px;
+  justify-content: center;
+  letter-spacing: 0.25px;
+  line-height: normal;
+  /*max-width: 100%;*/
+  overflow: visible;
+  padding: 2px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 130px;
+  will-change: transform, opacity;
+  z-index: 0;
+}
+
+.set-match-info {
+  margin-left: 68.5%;
+}
+
+/* pop up stuff */
+.popup,
+.end-result {
+  position: relative;
+}
+
+.modal-overlay,
+.end-result-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal,
+.end-result-modal {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto; /* Enable scrolling if modal content exceeds the viewport */
+}
+
+.modal label,
+.end-result-modal label {
+  display: block;
+}
+
+.winner,
+.winner-sets {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.winner-sets {
+  margin-top: 10px;
+}
+
+.modal input {
+  width: calc(100% - 20px);
+}
+
+.modal-content {
+  margin-top: 20px;
+}
+
+.popup-top {
+  display: flex;
+}
+
+.popup-name {
+  font-size: 20px;
+}
+
+.submit-button {
+  margin-top: 10px;
+  position: relative;
+  right: -76.5%;
+  font-size: 15px;
+  cursor: pointer;
+  z-index: 9999;
+}
+
+.close {
+  position: relative;
+  right: -35%;
+  font-size: 25px;
+  cursor: pointer;
+  z-index: 9999;
+}
+
+.close:hover {
+  scale: 80%;
+  z-index: 9999;
+}
+
+.data-table {
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid white;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.labels,
+.player1,
+.player2 {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  gap: 0px;
+  border-bottom: 1px solid white;
+}
+
+.labels {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.player2 {
+  border-bottom: none;
+}
+
+.previous-sets,
+.player-previous-sets {
+  grid-column: 1/6;
+  border-right: 0px solid black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.player-previous-sets div {
+  /*why div*/
+  margin-right: 10px;
+}
+
+.name,
+.player-name {
+  grid-column: 7/10;
+  white-space: nowrap;
+  border-right: 0px solid black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.sets,
+.player-sets {
+  grid-column: 11/11;
+  border-right: 0px solid black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.games,
+.player-games {
+  grid-column: 13/13;
+  border-right: 0px solid black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.points,
+.player-points {
+  grid-column: 15/16;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 5px;
+}
+
+/* .add-points {
+    grid-column: 15/16;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } */
+
+.section2 {
+  display: grid;
+  grid-template-columns: repeat(32, 1fr);
+  margin-left: 20%;
+  margin-right: 20%;
+  height: 300px;
+}
+
+.tennis-court-image {
+  grid-column: 1/26;
+  border-radius: 10px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+  cursor: pointer;
+  /* margin-left: 20%;
+    margin-right: 20%; */
+}
+
+.buttons {
+  margin-top: 10px;
+  grid-column: 27/32;
+}
+
+.serve-circles {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #dfff4f;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.serve-types {
+  margin-left: 15%;
+  margin-bottom: 10px;
+  color: white;
+  font-weight: bold;
+}
+
+/* .point-p1,
+  .point-p2,
+  .undo-point,
+  .first-serve,
+  .second-serve,
+  .let,
+  .non-serve,
+  .undo {
+    margin-bottom: 10px; /*margin adds space outside div, padding adds space inside div*/
+/*margin-top: 10px;
+    display: flex;
+    justify-content: center; /*align horizontally*/
+/*align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  */
+.point-p1:hover,
+.point-p2:hover,
+.undo-point:hover,
+.first-serve:hover:not(.clicked),
+.second-serve:hover:not(.clicked),
+.let:hover:not(.clicked),
+.undo:hover,
+.set-match-info:hover {
+  transform: scale(0.9);
+  transition-property: all;
+
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+  transition-duration: 150ms;
+}
+
+.first-serve.clicked {
+  outline-width: thick;
+}

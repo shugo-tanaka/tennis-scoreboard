@@ -1,4 +1,5 @@
 // need to be able to pull data from supa base to populate the score board.
+// when refreshed, the name pulls player 2 before it pulls what ever it has been updated to.
 
 import { useState, useEffect } from "react";
 import "./observer.css";
@@ -32,43 +33,25 @@ const Observer = () => {
   const [letScale, setLetScale] = useState("100%");
   const [isPointInc, setIsPointInc] = useState(1);
 
-  //variables for data input pop-up
-  const [isModalOpen, setIsModalOpen] = useState(true); //popup now starts off open
-  const [inputValue, setInputValue] = useState("");
-  const [submitClicked, setSubmitClicked] = useState(-1);
-  const [winner, setWinner] = useState("");
-
   // accessing data from API
   useEffect(() => {
     // Make an API request to FastAPI endpoint
-    fetch("http://127.0.0.1:8000/player_names/")
+    fetch("http://127.0.0.1:8000/scoreboard_data")
       .then((response) => response.json())
       .then((output) => {
-        setPlayer1(output[0]);
-        setPlayer2(output[1]);
+        setPlayer1(output["player1"]);
+        setPlayer2(output["player2"]);
+        setPrevSets1(output["prev_sets_1"]);
+        setPrevSets2(output["prev_sets_2"]);
+        setCurrSets1(output["curr_sets_1"]);
+        setCurrSets2(output["curr_sets_2"]);
+        setGames1(output["games_1"]);
+        setGames2(output["games_2"]);
+        setPoints1(output["points_1"]);
+        setPoints2(output["points_2"]);
       })
       .catch((error) => console.error("Error:", error));
   }, []);
-
-  const undoPoint = () => {
-    fetch("http://127.0.0.1:8000/undo_score/")
-      .then((response) => response.json())
-      .then((output) => {
-        console.log(output.data[output.data.length - 1]);
-        const outputData = output.data[output.data.length - 1];
-        setPoints1(outputData["points_1"]);
-        setPoints2(outputData["points_2"]);
-        setGames1(outputData["games_1"]);
-        setGames2(outputData["games_2"]);
-        setCurrSets1(outputData["curr_sets_1"]);
-        setCurrSets2(outputData["curr_sets_2"]);
-        setPrevSets1(outputData["prev_sets_1"]);
-        setPrevSets2(outputData["prev_sets_2"]);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
 
   const [inputValues, setInputValues] = useState({
     date: new Date().toLocaleDateString(),
@@ -76,251 +59,6 @@ const Observer = () => {
     player1Name: "Koji Tanaka",
     player2Name: "Player 2",
   });
-
-  const postData = {
-    points: [points1, points2],
-    games: [games1, games2],
-    sets: [currSets1, currSets2],
-    prev_sets: [prevSets1, prevSets2],
-    player_name: [inputValues.player1Name, inputValues.player2Name],
-    date: inputValues.date,
-  };
-
-  useEffect(() => {
-    const updateSupa = () => {
-      fetch("http://127.0.0.1:8000/scoreboard_input", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Handle the response from the backend if needed
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    };
-
-    updateSupa();
-  }, [isPointInc]);
-
-  const incPoints1 = async () => {
-    // stop being able to be pushed once match is won
-    if (currSets1 === 2 || currSets2 === 2) {
-      if (currSets1 > currSets2) {
-        setWinner(player1);
-      } else {
-        setWinner(player2);
-      }
-
-      setIsEndResultOpen(true);
-
-      return null;
-    }
-
-    // tie break replacement for set 3
-    else if (currSets1 === 1 && currSets2 === 1) {
-      setPoints1((prevPoints1) => {
-        const newPoints1 = prevPoints1 + 1;
-        if (newPoints1 >= 10 && newPoints1 > points2 + 1) {
-          incSets1();
-          setPoints2(0);
-          setPoints1(0);
-          setGames1(0);
-          setGames2(0);
-          addPrevSets1(newPoints1);
-          addPrevSets2(points2);
-        }
-        return newPoints1;
-      });
-    }
-
-    // tie break scenario for first two sets
-    else if (games1 === 6 && games2 === 6) {
-      setPoints1((prevPoints1) => {
-        const newPoints1 = prevPoints1 + 1;
-        if (newPoints1 >= 7 && newPoints1 > points2 + 1) {
-          incGames1();
-          setPoints1(0);
-          setPoints2(0);
-        }
-        return newPoints1;
-      });
-    } else if (points1 === 0) {
-      setPoints1(15);
-    } else if (points1 === 15) {
-      setPoints1(30);
-    } else if (points1 === 30) {
-      if (points2 === 40) {
-        setPoints1("Deuce");
-        setPoints2("Deuce");
-      } else {
-        setPoints1(40);
-      }
-    } else if (points1 === "Deuce") {
-      setPoints1("ad");
-      setPoints2("-");
-    } else if (points2 === "ad") {
-      setPoints1("Deuce");
-      setPoints2("Deuce");
-    } else {
-      incGames1();
-      setPoints1(0);
-      setPoints2(0);
-    }
-    setServeCircles([]);
-    setFirstServeClicked(true);
-    setFirstServeScale(firstServeClicked ? "90%" : "100%");
-    setSecondServeClicked(false);
-    setLetClicked(false);
-    setSecondServeScale("100%");
-    setLetScale("100%");
-    setIsPointInc(isPointInc * -1);
-  };
-
-  const incGames1 = () => {
-    setGames1((prevGames1) => {
-      // preGames1 is the previous games1?
-      const newGames1 = prevGames1 + 1;
-
-      if (newGames1 === 6 && games2 <= 4) {
-        incSets1();
-        addPrevSets1(newGames1);
-        addPrevSets2(games2);
-        setGames1(0);
-        setGames2(0);
-      } else if (newGames1 === 7 && games2 === 6) {
-        incSets1();
-        addPrevSets1(newGames1);
-        addPrevSets2(games2);
-        setGames1(0);
-        setGames2(0);
-      } else if (newGames1 >= 6 && games2 >= 5) {
-        if (newGames1 > games2 + 1) {
-          incSets1();
-          addPrevSets1(newGames1);
-          addPrevSets2(games2);
-          setGames1(0);
-          setGames2(0);
-        }
-      }
-
-      return newGames1;
-    });
-  };
-
-  const incSets1 = () => {
-    setCurrSets1((set) => set + 1);
-  };
-
-  const addPrevSets1 = (score) => {
-    let newSet = [...prevSets1];
-    newSet.push(score);
-    setPrevSets1(newSet);
-  };
-
-  const incPoints2 = () => {
-    if (currSets1 === 2 || currSets2 === 2) {
-      return null;
-    } else if (currSets2 === 1 && currSets1 === 1) {
-      setPoints2((prevPoints2) => {
-        const newPoints2 = prevPoints2 + 1;
-        if (newPoints2 >= 10 && newPoints2 > points1 + 1) {
-          incSets2();
-          setPoints2(0);
-          setPoints1(0);
-          setGames1(0);
-          setGames2(0);
-        }
-        return newPoints2;
-      });
-    } else if (games1 === 6 && games2 === 6) {
-      setPoints2((prevPoints2) => {
-        const newPoints2 = prevPoints2 + 1;
-        if (newPoints2 >= 7 && newPoints2 > points1 + 1) {
-          incGames1();
-          setPoints1(0);
-          setPoints2(0);
-          addPrevSets1(points1);
-          addPrevSets2(newPoints2);
-        }
-        return newPoints2;
-      });
-    } else if (points2 === 0) {
-      setPoints2(15);
-    } else if (points2 === 15) {
-      setPoints2(30);
-    } else if (points2 === 30) {
-      if (points1 === 40) {
-        setPoints1("Deuce");
-        setPoints2("Deuce");
-      } else {
-        setPoints2(40);
-      }
-    } else if (points2 === "Deuce") {
-      setPoints2("ad");
-      setPoints1("-");
-    } else if (points1 === "ad") {
-      setPoints1("Deuce");
-      setPoints2("Deuce");
-    } else {
-      incGames2();
-      setPoints2(0);
-      setPoints1(0);
-    }
-    setServeCircles([]);
-    setFirstServeClicked(true);
-    setFirstServeScale(firstServeClicked ? "90%" : "100%");
-    setSecondServeClicked(false);
-    setLetClicked(false);
-    setSecondServeScale("100%");
-    setLetScale("100%");
-    setIsPointInc(isPointInc * -1);
-  };
-
-  const incGames2 = () => {
-    setGames2((prevGames2) => {
-      const newGames2 = prevGames2 + 1;
-
-      if (newGames2 === 6 && games1 <= 4) {
-        incSets2();
-        addPrevSets1(games1);
-        addPrevSets2(newGames2);
-        setGames1(0);
-        setGames2(0);
-      } else if (newGames2 === 7 && games1 === 6) {
-        incSets2();
-        addPrevSets1(games1);
-        addPrevSets2(newGames2);
-        setGames1(0);
-        setGames2(0);
-      } else if (newGames2 >= 6 && games1 >= 5) {
-        if (newGames2 > games1 + 1) {
-          incSets2();
-          addPrevSets1(games1);
-          addPrevSets2(newGames2);
-          setGames1(0);
-          setGames2(0);
-        }
-      }
-
-      return newGames2;
-    });
-  };
-
-  const incSets2 = () => {
-    setCurrSets2((set) => set + 1);
-  };
-
-  const addPrevSets2 = (score) => {
-    let newSet = [...prevSets2];
-    newSet.push(score);
-    setPrevSets2(newSet);
-  };
 
   const handleImageClick = (event) => {
     const container = event.currentTarget;
@@ -348,67 +86,9 @@ const Observer = () => {
     // TODO: above includes non-serves
   };
 
-  const undo = () => {
-    const tempServeCircles = [...serveCircles];
-    tempServeCircles.pop();
-
-    const tempServeData = [...serveData];
-    tempServeData.pop();
-    setServeCircles(tempServeCircles);
-    setServeData(tempServeData);
-  };
-
-  //pop-up related functions
-
-  useEffect(() => {
-    const updateSupaMatch = () => {
-      fetch("http://127.0.0.1:8000/match_data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inputValues),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    };
-    updateSupaMatch();
-  }, [submitClicked]);
-
-  const clickSubmit = () => {
-    setPlayer1(inputValues.player1Name);
-    setPlayer2(inputValues.player2Name);
-    setSubmitClicked(submitClicked * -1);
-  };
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setInputValues((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Input value:", inputValue);
-    setIsModalOpen(false);
-  };
-
   //end result pop up related
+
+  const [winner, setWinner] = useState("");
 
   const [isEndResultOpen, setIsEndResultOpen] = useState(false);
 

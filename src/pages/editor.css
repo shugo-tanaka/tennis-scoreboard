@@ -30,7 +30,7 @@
   display: inline-flex;
   fill: currentcolor;
   font-family: "Google Sans", Roboto, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   height: 35px;
   justify-content: center;
@@ -47,13 +47,21 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  width: 130px;
+  width: 110px;
+  /* height: 25px; */
   will-change: transform, opacity;
   z-index: 0;
 }
 
+.set-match-info-div {
+  display: grid;
+  grid-template-columns: repeat(32, 1fr);
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
 .set-match-info {
-  margin-left: 68.5%;
+  grid-column: 28/33;
 }
 
 /* pop up stuff */
@@ -137,6 +145,12 @@
 .close:hover {
   scale: 80%;
   z-index: 9999;
+}
+
+.match-info-date,
+.match-info-p1,
+.match-info-p2 {
+  margin-bottom: 12px;
 }
 
 .data-table {
@@ -237,10 +251,11 @@
   margin-left: 20%;
   margin-right: 20%;
   height: 300px;
+  /* width: 60%; */
 }
 
 .tennis-court-image {
-  grid-column: 1/26;
+  grid-column: 1/27;
   border-radius: 10px;
   background-color: white;
   display: flex;
@@ -250,13 +265,15 @@
   overflow: hidden;
   margin-top: 10px;
   cursor: pointer;
+  /* width: 100%;
+  height: 100%; */
   /* margin-left: 20%;
     margin-right: 20%; */
 }
 
 .buttons {
   margin-top: 10px;
-  grid-column: 27/32;
+  grid-column: 28/33;
 }
 
 .serve-circles {
@@ -273,6 +290,7 @@
   margin-bottom: 10px;
   color: white;
   font-weight: bold;
+  font-size: 12px;
 }
 
 /* .point-p1,

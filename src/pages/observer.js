@@ -166,12 +166,12 @@ const Observer = () => {
           </div> */}
         </div>
       </div>
-      <div className="section2">
-        <div className="tennis-court-image" onClick={handleImageClick}>
+      <div className="section2-observer">
+        <div className="tennis-court-image-observer" onClick={handleImageClick}>
           <img
             src="/tennis-court-diagram.jpg"
             alt="Tennis Court"
-            style={{ width: "90%", height: "90%" }}
+            style={{ width: "100%", height: "100%" }}
           />
           {serveCircles.map((circle, index) => (
             <div

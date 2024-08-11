@@ -48,6 +48,9 @@ const Editor = () => {
   const [inputValue, setInputValue] = useState("");
   const [submitClicked, setSubmitClicked] = useState(-1);
   const [winner, setWinner] = useState("");
+  const [errorDate, setErrorDate] = useState(false);
+  const [errorP1, setErrorP1] = useState(false);
+  const [errorP2, setErrorP2] = useState(false);
 
   // accessing data from API
   useEffect(() => {
@@ -81,8 +84,18 @@ const Editor = () => {
       });
   };
 
+  const getCurrentDate = () => {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+
   const [inputValues, setInputValues] = useState({
-    date: new Date().toLocaleDateString(),
+    date: getCurrentDate(),
     // startTime: "",
     player1Name: "Koji Tanaka",
     player2Name: "Player 2",
@@ -448,9 +461,11 @@ const Editor = () => {
         )}
       </div>
       <div className="popup">
-        <button className="set-match-info" onClick={handleOpenModal}>
-          Set Match Information
-        </button>
+        <div className="set-match-info-div">
+          <button className="set-match-info" onClick={handleOpenModal}>
+            Set Match Info
+          </button>
+        </div>
         {isModalOpen && (
           <div className="modal-overlay">
             <div className="modal">
@@ -462,7 +477,7 @@ const Editor = () => {
               </div>
               <div className="modal-content">
                 <form onSubmit={handleSubmit}>
-                  <label>
+                  <label className="match-info-date">
                     Date MM/DD/YYYY
                     <input
                       type="Date"
@@ -482,8 +497,14 @@ const Editor = () => {
                       onChange={handleInputChange}
                     />
                   </label> */}
-                  <label>
+                  <label className="match-info-p1">
                     Player 1 Name
+                    {/* {errorP1 && (
+                      <div className="error-p1">
+                        {" "}
+                        Please enter name for Player 1.{" "}
+                      </div>
+                    )} */}
                     <input
                       type="text"
                       name="player1Name"
@@ -491,8 +512,14 @@ const Editor = () => {
                       onChange={handleInputChange}
                     />
                   </label>
-                  <label>
+                  <label className="match-info-p2">
                     Player 2 Name
+                    {/* {errorP2 && (
+                      <div className="error-p1">
+                        {" "}
+                        Please enter name for Player 2.{" "}
+                      </div>
+                    )} */}
                     <input
                       type="text"
                       name="player2Name"
@@ -567,7 +594,7 @@ const Editor = () => {
           <img
             src="/tennis-court-diagram.jpg"
             alt="Tennis Court"
-            style={{ width: "90%", height: "90%" }}
+            style={{ width: "100%", height: "100%" }}
           />
           {serveCircles.map((circle, index) => (
             <div

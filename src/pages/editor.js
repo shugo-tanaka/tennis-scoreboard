@@ -2,12 +2,13 @@
 // need to be able to display that the game is finished. Created but add to the observer side as opposed to the score keeping side.
 // need to be able to do error handling for inputing match information.
 // what if there are multiple matches in a day - how do you distinguish games if not opponent name?
-// if button is clicked, should it not scale? webdesign question.
 // if date is not inputted, submit should throw an error message. Or will there always be the opponent name information?
 // need to be able to show what side Koji is on, etc. Maybe create a button that switches sides?
 // Need to also show which side he is serving to.
 // need to convert it to mobile.
 // serve side. show who is serving on table.
+
+//is updating isn't working the way I want it to.
 
 //react router.
 
@@ -51,6 +52,7 @@ const Editor = () => {
   const [errorDate, setErrorDate] = useState(false);
   const [errorP1, setErrorP1] = useState(false);
   const [errorP2, setErrorP2] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   // accessing data from API
   useEffect(() => {
@@ -129,10 +131,19 @@ const Editor = () => {
         });
     };
 
-    updateSupa();
-  }, [isPointInc]);
+    try {
+      setIsUpdating(true);
+      updateSupa();
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [postData]);
 
   const incPoints1 = async () => {
+    if (isUpdating) {
+      return;
+    }
+    setIsUpdating(true);
     // stop being able to be pushed once match is won
     if (currSets1 === 2 || currSets2 === 2) {
       if (currSets1 > currSets2) {
@@ -248,7 +259,22 @@ const Editor = () => {
   };
 
   const incPoints2 = () => {
-    if (currSets1 === 2 || currSets2 === 2) {
+    if (isUpdating) {
+      return;
+    }
+
+    // stop being able to be pushed once match is won
+    else if (currSets1 === 2 || currSets2 === 2) {
+      if (currSets1 > currSets2) {
+        setWinner(player1);
+      } else {
+        setWinner(player2);
+      }
+
+      setIsEndResultOpen(true);
+
+      return null;
+    } else if (currSets1 === 2 || currSets2 === 2) {
       return null;
     } else if (currSets2 === 1 && currSets1 === 1) {
       setPoints2((prevPoints2) => {
@@ -620,6 +646,7 @@ const Editor = () => {
             onClick={async () => {
               incPoints1();
             }}
+            disabled={isUpdating}
           >
             + {player1.split(" ")[0][0]} {player1.split(" ")[1]}
           </button>

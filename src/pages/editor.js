@@ -3,12 +3,11 @@
 // need to be able to do error handling for inputing match information.
 // what if there are multiple matches in a day - how do you distinguish games if not opponent name?
 // if date is not inputted, submit should throw an error message. Or will there always be the opponent name information?
-// need to be able to show what side Koji is on, etc. Maybe create a button that switches sides?
+// need to be able to show what side Koji is on, etc. Maybe create a button that switches sides? Probably don't need one TBH.
 // Need to also show which side he is serving to.
 // need to convert it to mobile.
-// serve side. show who is serving on table.
 
-//server change needs to be correct for tie break situations. Switch one, then every two format.
+//when someone wins set, the serve indicator goes to the other server before correcting to the set version logic.
 
 //react router.
 
@@ -612,7 +611,7 @@ const Editor = () => {
                     />
                   </label>
                   <label className="serve-order">
-                    Serve order
+                    Koji Serve Order
                     <div className="serve-order-sub">
                       <div className="serve-first">1st</div>
                       <input

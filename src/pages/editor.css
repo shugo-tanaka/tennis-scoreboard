@@ -5,63 +5,15 @@
   justify-content: center;
   align-items: center;
   color: white;
+  margin-bottom: 0px;
 }
 
-.set-match-info,
-.point-p1,
-.point-p2,
-.undo-point,
-.first-serve,
-.second-serve,
-.let,
-.undo {
-  /*margin-left: 67.5%;*/
-  margin-bottom: 10px;
-  align-items: center;
-  appearance: none;
-  background-color: #fff;
-  border-radius: 24px;
-  border-style: none;
-  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
-    rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
-  box-sizing: border-box;
-  color: #3c4043;
-  cursor: pointer;
-  display: inline-flex;
-  fill: currentcolor;
-  font-family: "Google Sans", Roboto, Arial, sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  height: 35px;
-  justify-content: center;
-  letter-spacing: 0.25px;
-  line-height: normal;
-  /*max-width: 100%;*/
-  overflow: visible;
-  padding: 2px 24px;
-  position: relative;
-  text-align: center;
-  text-transform: none;
-  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: 110px;
-  /* height: 25px; */
-  will-change: transform, opacity;
-  z-index: 0;
-}
-
+/* set match info stuff */
 .set-match-info-div {
-  display: grid;
-  grid-template-columns: repeat(32, 1fr);
+  /* display: grid; */
+  /* grid-template-columns: repeat(32, 1fr); */
   margin-left: 20%;
   margin-right: 20%;
-}
-
-.set-match-info {
-  grid-column: 28/33;
 }
 
 /* pop up stuff */
@@ -153,6 +105,22 @@
   margin-bottom: 12px;
 }
 
+.serve-order-sub {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.serve-first,
+.serve-second {
+  grid-column: 1/2;
+}
+
+.serve-first-radio,
+.serve-second-radio {
+  grid-column: 2/2;
+}
+
+/* data table stuff */
 .data-table {
   background-color: white;
   border-radius: 10px;
@@ -196,7 +164,18 @@
 
 .name,
 .player-name {
-  grid-column: 7/10;
+  grid-column: 6/8;
+  white-space: nowrap;
+  border-right: 0px solid black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.serve-status,
+.player-serve-status {
+  grid-column: 9/9;
   white-space: nowrap;
   border-right: 0px solid black;
   display: flex;
@@ -245,8 +224,9 @@
     align-items: center;
   } */
 
+/* section under data table stuff */
 .section2 {
-  display: grid;
+  /* display: grid; */
   grid-template-columns: repeat(32, 1fr);
   margin-left: 20%;
   margin-right: 20%;
@@ -254,8 +234,9 @@
   /* width: 60%; */
 }
 
+/* tennis court image stuff */
 .tennis-court-image {
-  grid-column: 1/27;
+  grid-column: 1/33;
   border-radius: 10px;
   background-color: white;
   display: flex;
@@ -265,15 +246,10 @@
   overflow: hidden;
   margin-top: 10px;
   cursor: pointer;
-  /* width: 100%;
-  height: 100%; */
+  width: 100%;
+  height: 100%;
   /* margin-left: 20%;
     margin-right: 20%; */
-}
-
-.buttons {
-  margin-top: 10px;
-  grid-column: 28/33;
 }
 
 .serve-circles {
@@ -285,12 +261,85 @@
   border-radius: 50%;
 }
 
-.serve-types {
-  margin-left: 15%;
-  margin-bottom: 10px;
+/* section for buttons */
+.buttons {
+  margin-top: 10px;
+  /* grid-column: 28/33; */
+}
+
+.serve-options-label-editor,
+/* .serving, */
+.point-options-editor,
+.point-options-label-editor {
+  /* margin-left: 15%; */
+  /* margin-bottom: 5px; */
   color: white;
   font-weight: bold;
+  /* font-size: 12px; */
+}
+
+.serve-options-label-editor,
+.point-options-label-editor {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.serving {
   font-size: 12px;
+}
+
+.serve-options-editor,
+.point-options-editor {
+  display: grid;
+  grid-template-columns: repeat(32, 1fr);
+}
+
+/* button formats */
+.set-match-info,
+.point-p1,
+.point-p2,
+.undo-point,
+.first-serve,
+.second-serve,
+.let,
+.undo {
+  /*margin-left: 67.5%;*/
+  margin-bottom: 10px;
+  margin-right: 10px;
+  align-items: center;
+  appearance: none;
+  background-color: #fff;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+    rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
+  box-sizing: border-box;
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  height: 35px;
+  justify-content: center;
+  letter-spacing: 0.25px;
+  line-height: normal;
+  /*max-width: 100%;*/
+  overflow: visible;
+  padding: 2px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 110px;
+  /* height: 25px; */
+  will-change: transform, opacity;
+  z-index: 0;
 }
 
 /* .point-p1,

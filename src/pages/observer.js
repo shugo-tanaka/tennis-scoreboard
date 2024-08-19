@@ -1,5 +1,6 @@
 // need to be able to pull data from supa base to populate the score board.
 // when refreshed, the name pulls player 2 before it pulls what ever it has been updated to.
+// serve data still needs to get pulled.
 
 import { useState, useEffect } from "react";
 import "./observer.css";
@@ -96,6 +97,13 @@ const Observer = () => {
     setIsEndResultOpen(false);
   };
 
+  //server status related
+  const [selectedServerValue, setSelectedServerValue] = useState("");
+
+  const handleServerChange = (event) => {
+    setSelectedServerValue(event.target.value);
+  };
+
   return (
     <div>
       <h1 className="tennis-score">
@@ -121,6 +129,7 @@ const Observer = () => {
         <div className="labels">
           <div className="previous-sets">Previous Sets</div>
           <div className="name">Player Name</div>
+          <div className="serve-status">Serve</div>
           <div className="sets">Sets</div>
           <div className="games">Games</div>
           <div className="points">Points</div>
@@ -133,6 +142,16 @@ const Observer = () => {
             })}
           </div>
           <div className="player-name">{player1}</div>
+          <div className="player-serve-status">
+            <label>
+              <input
+                type="radio"
+                value="p1"
+                checked={selectedServerValue === "p1"}
+                onChange={handleServerChange}
+              ></input>
+            </label>
+          </div>
           <div className="player-sets">{currSets1}</div>
           <div className="player-games">{games1}</div>
           <div className="player-points">{points1}</div>
@@ -153,6 +172,16 @@ const Observer = () => {
             })}
           </div>
           <div className="player-name">{player2}</div>
+          <div className="player-serve-status">
+            <label>
+              <input
+                type="radio"
+                value="p2"
+                checked={selectedServerValue === "p2"}
+                onChange={handleServerChange}
+              ></input>
+            </label>
+          </div>
           <div className="player-sets">{currSets2}</div>
           <div className="player-games">{games2}</div>
           <div className="player-points">{points2}</div>

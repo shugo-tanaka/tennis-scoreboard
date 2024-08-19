@@ -105,7 +105,7 @@
 
 .name,
 .player-name {
-  grid-column: 7/10;
+  grid-column: 6/8;
   white-space: nowrap;
   border-right: 0px solid black;
   display: flex;
@@ -114,9 +114,10 @@
   padding-left: 10px;
 }
 
-.sets,
-.player-sets {
-  grid-column: 11/11;
+.serve-status,
+.player-serve-status {
+  grid-column: 9/9;
+  white-space: nowrap;
   border-right: 0px solid black;
   display: flex;
   justify-content: flex-start;
@@ -186,50 +187,4 @@
   background-color: #dfff4f;
   border: 1px solid black;
   border-radius: 50%;
-}
-
-.serve-types {
-  margin-left: 15%;
-  margin-bottom: 10px;
-  color: white;
-  font-weight: bold;
-}
-
-/* .point-p1,
-    .point-p2,
-    .undo-point,
-    .first-serve,
-    .second-serve,
-    .let,
-    .non-serve,
-    .undo {
-      margin-bottom: 10px; /*margin adds space outside div, padding adds space inside div*/
-/*margin-top: 10px;
-      display: flex;
-      justify-content: center; /*align horizontally*/
-/*align-items: center;
-      background-color: white;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    */
-.point-p1:hover,
-.point-p2:hover,
-.undo-point:hover,
-.first-serve:hover:not(.clicked),
-.second-serve:hover:not(.clicked),
-.let:hover:not(.clicked),
-.undo:hover,
-.set-match-info:hover {
-  transform: scale(0.9);
-  transition-property: all;
-
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-
-  transition-duration: 150ms;
-}
-
-.first-serve.clicked {
-  outline-width: thick;
 }

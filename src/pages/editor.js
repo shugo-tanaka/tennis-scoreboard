@@ -8,7 +8,7 @@
 // need to convert it to mobile.
 // serve side. show who is serving on table.
 
-//is updating isn't working the way I want it to.
+//server change needs to be correct for tie break situations. Switch one, then every two format.
 
 //react router.
 
@@ -96,11 +96,19 @@ const Editor = () => {
     return `${year}-${month}-${day}`;
   };
 
+  // serve order for setting match info
+  const [selectedOrder, setSelectedOrder] = useState("p1");
+
+  const handleServeOrderChange = (event) => {
+    setSelectedOrder(event.target.value);
+  };
+
   const [inputValues, setInputValues] = useState({
     date: getCurrentDate(),
     // startTime: "",
     player1Name: "Koji Tanaka",
     player2Name: "Player 2",
+    serveOrder: selectedOrder,
   });
 
   const postData = {
@@ -139,6 +147,19 @@ const Editor = () => {
     }
   }, [postData]);
 
+  //UseEffects to change server radio button automatically.
+  useEffect(() => {
+    if ((currSets1 + currSets2) % 2 == 0) {
+      setSelectedServerValue(selectedOrder);
+    } else {
+      if (selectedOrder == "p1") {
+        setSelectedServerValue("p2");
+      } else {
+        setSelectedServerValue("p1");
+      }
+    }
+  }, [currSets1, currSets2]);
+
   const incPoints1 = async () => {
     if (isUpdating) {
       return;
@@ -161,6 +182,11 @@ const Editor = () => {
     else if (currSets1 === 1 && currSets2 === 1) {
       setPoints1((prevPoints1) => {
         const newPoints1 = prevPoints1 + 1;
+        if (newPoints1 + points2 == 1) {
+          setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
+        } else if ((newPoints1 + points2) % 2 == 1) {
+          setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
+        }
         if (newPoints1 >= 10 && newPoints1 > points2 + 1) {
           incSets1();
           setPoints2(0);
@@ -178,6 +204,12 @@ const Editor = () => {
     else if (games1 === 6 && games2 === 6) {
       setPoints1((prevPoints1) => {
         const newPoints1 = prevPoints1 + 1;
+        //insert tie break server change logic here.
+        if (newPoints1 + points2 == 1) {
+          setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
+        } else if ((newPoints1 + points2) % 2 == 1) {
+          setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
+        }
         if (newPoints1 >= 7 && newPoints1 > points2 + 1) {
           incGames1();
           setPoints1(0);
@@ -206,6 +238,7 @@ const Editor = () => {
       incGames1();
       setPoints1(0);
       setPoints2(0);
+      setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
     }
     setServeCircles([]);
     setFirstServeClicked(true);
@@ -220,26 +253,26 @@ const Editor = () => {
   const incGames1 = () => {
     setGames1((prevGames1) => {
       // preGames1 is the previous games1?
-      const newGames1 = prevGames1 + 1;
+      var newGames1 = prevGames1 + 1;
 
       if (newGames1 === 6 && games2 <= 4) {
         incSets1();
         addPrevSets1(newGames1);
         addPrevSets2(games2);
-        setGames1(0);
+        newGames1 = 0;
         setGames2(0);
       } else if (newGames1 === 7 && games2 === 6) {
         incSets1();
         addPrevSets1(newGames1);
         addPrevSets2(games2);
-        setGames1(0);
+        newGames1 = 0;
         setGames2(0);
       } else if (newGames1 >= 6 && games2 >= 5) {
         if (newGames1 > games2 + 1) {
           incSets1();
           addPrevSets1(newGames1);
           addPrevSets2(games2);
-          setGames1(0);
+          newGames1 = 0;
           setGames2(0);
         }
       }
@@ -276,9 +309,15 @@ const Editor = () => {
       return null;
     } else if (currSets1 === 2 || currSets2 === 2) {
       return null;
+      //tie break going into 3rd set scenario
     } else if (currSets2 === 1 && currSets1 === 1) {
       setPoints2((prevPoints2) => {
         const newPoints2 = prevPoints2 + 1;
+        if (newPoints2 + points1 == 1) {
+          setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
+        } else if ((newPoints2 + points1) % 2 == 1) {
+          setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
+        }
         if (newPoints2 >= 10 && newPoints2 > points1 + 1) {
           incSets2();
           setPoints2(0);
@@ -288,11 +327,17 @@ const Editor = () => {
         }
         return newPoints2;
       });
+      //tie break going into 6to6 games scenario
     } else if (games1 === 6 && games2 === 6) {
       setPoints2((prevPoints2) => {
         const newPoints2 = prevPoints2 + 1;
+        if (newPoints2 + points1 == 1) {
+          setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
+        } else if ((newPoints2 + points1) % 2 == 1) {
+          setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
+        }
         if (newPoints2 >= 7 && newPoints2 > points1 + 1) {
-          incGames1();
+          incGames2();
           setPoints1(0);
           setPoints2(0);
           addPrevSets1(points1);
@@ -300,6 +345,7 @@ const Editor = () => {
         }
         return newPoints2;
       });
+      //regular scenario
     } else if (points2 === 0) {
       setPoints2(15);
     } else if (points2 === 15) {
@@ -321,6 +367,7 @@ const Editor = () => {
       incGames2();
       setPoints2(0);
       setPoints1(0);
+      setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
     }
     setServeCircles([]);
     setFirstServeClicked(true);
@@ -334,27 +381,29 @@ const Editor = () => {
 
   const incGames2 = () => {
     setGames2((prevGames2) => {
-      const newGames2 = prevGames2 + 1;
-
+      var newGames2 = prevGames2 + 1;
+      //scenario when p2 has reached 6 and p1 has less than 5
       if (newGames2 === 6 && games1 <= 4) {
         incSets2();
         addPrevSets1(games1);
         addPrevSets2(newGames2);
         setGames1(0);
-        setGames2(0);
+        newGames2 = 0;
+        //scenario where p2 wins the tie break
       } else if (newGames2 === 7 && games1 === 6) {
         incSets2();
         addPrevSets1(games1);
         addPrevSets2(newGames2);
         setGames1(0);
-        setGames2(0);
+        newGames2 = 0;
+        //scenario where p2 wins 7-5
       } else if (newGames2 >= 6 && games1 >= 5) {
         if (newGames2 > games1 + 1) {
           incSets2();
           addPrevSets1(games1);
           addPrevSets2(newGames2);
           setGames1(0);
-          setGames2(0);
+          newGames2 = 0;
         }
       }
 
@@ -433,6 +482,7 @@ const Editor = () => {
   const clickSubmit = () => {
     setPlayer1(inputValues.player1Name);
     setPlayer2(inputValues.player2Name);
+    setSelectedServerValue(selectedOrder === "p1" ? "p1" : "p2");
     setSubmitClicked(submitClicked * -1);
   };
 
@@ -462,10 +512,18 @@ const Editor = () => {
 
   const [isEndResultOpen, setIsEndResultOpen] = useState(false);
 
-  const handleCloseEndReult = () => {
+  const handleCloseEndResult = () => {
     setIsEndResultOpen(false);
   };
 
+  //serve radio button
+  const [selectedServerValue, setSelectedServerValue] = useState(selectedOrder);
+
+  const handleServerChange = (event) => {
+    setSelectedServerValue(event.target.value);
+  };
+
+  //HTML rendering
   return (
     <div>
       <h1 className="tennis-score">
@@ -553,6 +611,31 @@ const Editor = () => {
                       onChange={handleInputChange}
                     />
                   </label>
+                  <label className="serve-order">
+                    Serve order
+                    <div className="serve-order-sub">
+                      <div className="serve-first">1st</div>
+                      <input
+                        type="radio"
+                        name="serve-first-radio"
+                        className="serve-first-radio"
+                        value="p1"
+                        checked={selectedOrder === "p1"}
+                        onChange={handleServeOrderChange}
+                      ></input>
+                    </div>
+                    <div className="serve-order-sub">
+                      <div className="serve-second">2nd</div>
+                      <input
+                        type="radio"
+                        name="serve-second-radio"
+                        className="serve-second-radio"
+                        value="p2"
+                        checked={selectedOrder === "p2"}
+                        onChange={handleServeOrderChange}
+                      ></input>
+                    </div>
+                  </label>
                   <button
                     className="submit-button"
                     type="submit"
@@ -570,6 +653,7 @@ const Editor = () => {
         <div className="labels">
           <div className="previous-sets">Previous Sets</div>
           <div className="name">Player Name</div>
+          <div className="serve-status">Serve</div>
           <div className="sets">Sets</div>
           <div className="games">Games</div>
           <div className="points">Points</div>
@@ -582,6 +666,16 @@ const Editor = () => {
             })}
           </div>
           <div className="player-name">{player1}</div>
+          <div className="player-serve-status">
+            <label>
+              <input
+                type="radio"
+                value="p1"
+                checked={selectedServerValue === "p1"}
+                onChange={handleServerChange}
+              ></input>
+            </label>
+          </div>
           <div className="player-sets">{currSets1}</div>
           <div className="player-games">{games1}</div>
           <div className="player-points">{points1}</div>
@@ -602,6 +696,16 @@ const Editor = () => {
             })}
           </div>
           <div className="player-name">{player2}</div>
+          <div className="player-serve-status">
+            <label>
+              <input
+                type="radio"
+                value="p2"
+                checked={selectedServerValue === "p2"}
+                onChange={handleServerChange}
+              ></input>
+            </label>
+          </div>
           <div className="player-sets">{currSets2}</div>
           <div className="player-games">{games2}</div>
           <div className="player-points">{points2}</div>
@@ -641,87 +745,104 @@ const Editor = () => {
           ))}
         </div>
         <div className="buttons">
-          <button
-            className="point-p1"
-            onClick={async () => {
-              incPoints1();
-            }}
-            disabled={isUpdating}
-          >
-            + {player1.split(" ")[0][0]} {player1.split(" ")[1]}
-          </button>
-          <button
-            className="point-p2"
-            onClick={async () => {
-              incPoints2();
-            }}
-          >
-            + {player2.split(" ")[0][0]} {player2.split(" ")[1]}
-          </button>
-          <button
-            className="undo-point"
-            onClick={async () => {
-              undoPoint();
-            }}
-          >
-            Undo Point
-          </button>
-          <div className="serve-types">SERVE TYPES</div>
-          <button
-            className={`first-serve ${firstServeClicked ? "clicked" : ""}`}
-            onClick={() => {
-              setFirstServeClicked(true);
-              setFirstServeScale("90%"); //firstServeClicked ? "90%" : "100%");
-              setSecondServeClicked(false);
-              setLetClicked(false);
+          <div className="point-options-label-editor">POINT OPTIONS</div>
+          <div className="point-options-editor">
+            <button
+              className="point-p1"
+              onClick={async () => {
+                incPoints1();
+              }}
+              // disabled={isUpdating}
+            >
+              + {player1.split(" ")[0][0]} {player1.split(" ")[1]}
+            </button>
+            <button
+              className="point-p2"
+              onClick={async () => {
+                incPoints2();
+              }}
+            >
+              + {player2.split(" ")[0][0]} {player2.split(" ")[1]}
+            </button>
+            <button
+              className="undo-point"
+              onClick={async () => {
+                undoPoint();
+              }}
+            >
+              Undo Point
+            </button>
+          </div>
+          <div className="serve-options-label-editor">SERVE OPTIONS</div>
+          <div className="serve-options-editor">
+            {/* <div className="serving">
+              <div>SERVING</div>
+              {serveOptions.map((option) => (
+                <lable key={option.id}>
+                  <input
+                    type="radio"
+                    value={option.id}
+                    checked={selectedServeValue === option.id}
+                    onChnage={handleServeChange}
+                  />
+                </lable>
+              ))}
+            </div> */}
+            <button
+              className={`first-serve ${firstServeClicked ? "clicked" : ""}`}
+              onClick={() => {
+                setFirstServeClicked(true);
+                setFirstServeScale("90%"); //firstServeClicked ? "90%" : "100%");
+                setSecondServeClicked(false);
+                setLetClicked(false);
 
-              setSecondServeScale("100%");
-              setLetScale("100%");
-            }}
-            style={{
-              scale: firstServeScale,
-            }}
-          >
-            1st Serve
-          </button>
-          <button
-            className={`second-serve ${secondServeClicked ? "clicked" : ""}`}
-            onClick={() => {
-              setSecondServeClicked(true);
-              setSecondServeScale("90%"); //secondServeClicked ? "90%" : "100%");
-              setFirstServeClicked(false);
-              setLetClicked(false);
+                setSecondServeScale("100%");
+                setLetScale("100%");
+              }}
+              style={{
+                scale: firstServeScale,
+              }}
+            >
+              1st Serve
+            </button>
+            <button
+              className={`second-serve ${secondServeClicked ? "clicked" : ""}`}
+              onClick={() => {
+                setSecondServeClicked(true);
+                setSecondServeScale("90%"); //secondServeClicked ? "90%" : "100%");
+                setFirstServeClicked(false);
+                setLetClicked(false);
 
-              setFirstServeScale("100%");
-              setLetScale("100%");
-            }}
-            style={{
-              scale: secondServeScale,
-            }}
-          >
-            2nd Serve
-          </button>
-          <button
-            className={`let ${letClicked ? "clicked" : ""}`}
-            onClick={() => {
-              setLetClicked(true); //!letClicked);
-              setLetScale("90%"); //letClicked ? "90%" : "100%");
-              setSecondServeClicked(false);
-              setFirstServeClicked(false);
+                setFirstServeScale("100%");
+                setLetScale("100%");
+              }}
+              style={{
+                scale: secondServeScale,
+              }}
+            >
+              2nd Serve
+            </button>
+            <button
+              className={`let ${letClicked ? "clicked" : ""}`}
+              onClick={() => {
+                setLetClicked(true); //!letClicked);
+                setLetScale("90%"); //letClicked ? "90%" : "100%");
+                setSecondServeClicked(false);
+                setFirstServeClicked(false);
 
-              setSecondServeScale("100%");
-              setFirstServeScale("100%");
-            }}
-            style={{
-              scale: letScale,
-            }}
-          >
-            Let
-          </button>
-
-          <button className="undo" onClick={undo}>
-            Undo Serve
-          </button>
+                setSecondServeScale("100%");
+                setFirstServeScale("100%");
+              }}
+              style={{
+                scale: letScale,
+              }}
+            >
+              Let
+            </button>
+            <button className="undo" onClick={undo}>
+              Undo Serve
+            </button>
+          </div>
           {/* maybe insert pic of undo instead */}
         </div>
       </div>

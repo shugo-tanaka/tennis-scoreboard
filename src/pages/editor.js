@@ -7,7 +7,8 @@
 // Need to also show which side he is serving to.
 // need to convert it to mobile.
 
-//when someone wins set, the serve indicator goes to the other server before correcting to the set version logic.
+// when someone wins set, the serve indicator goes to the other server before correcting to the set version logic.
+// serve balls need to translate to other screen.
 
 //react router.
 
@@ -48,9 +49,9 @@ const Editor = () => {
   const [inputValue, setInputValue] = useState("");
   const [submitClicked, setSubmitClicked] = useState(-1);
   const [winner, setWinner] = useState("");
-  const [errorDate, setErrorDate] = useState(false);
-  const [errorP1, setErrorP1] = useState(false);
-  const [errorP2, setErrorP2] = useState(false);
+  // const [errorDate, setErrorDate] = useState(false);
+  // const [errorP1, setErrorP1] = useState(false);
+  // const [errorP2, setErrorP2] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
   // accessing data from API
@@ -118,6 +119,26 @@ const Editor = () => {
     player_name: [inputValues.player1Name, inputValues.player2Name],
     date: inputValues.date,
   };
+
+  useEffect(() => {
+    //work on this!!!
+
+    fetch("http://127.0.0.1:8000/serve_locations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(serveCircles),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response from the backend if needed
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, [serveCircles]);
 
   useEffect(() => {
     const updateSupa = () => {
@@ -237,7 +258,7 @@ const Editor = () => {
       incGames1();
       setPoints1(0);
       setPoints2(0);
-      setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
+      // setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
     }
     setServeCircles([]);
     setFirstServeClicked(true);
@@ -274,6 +295,8 @@ const Editor = () => {
           newGames1 = 0;
           setGames2(0);
         }
+      } else {
+        setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
       }
 
       return newGames1;
@@ -366,7 +389,6 @@ const Editor = () => {
       incGames2();
       setPoints2(0);
       setPoints1(0);
-      setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
     }
     setServeCircles([]);
     setFirstServeClicked(true);
@@ -404,6 +426,8 @@ const Editor = () => {
           setGames1(0);
           newGames2 = 0;
         }
+      } else {
+        setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
       }
 
       return newGames2;

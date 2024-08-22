@@ -7,7 +7,6 @@
 // Need to also show which side he is serving to.
 // need to convert it to mobile.
 
-// when someone wins set, the serve indicator goes to the other server before correcting to the set version logic.
 // serve balls need to translate to other screen.
 
 //react router.
@@ -53,6 +52,11 @@ const Editor = () => {
   // const [errorP1, setErrorP1] = useState(false);
   // const [errorP2, setErrorP2] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+
+  //back end serveCircles
+  const [serveX, setServeX] = useState([]);
+  const [serveY, setServeY] = useState([]);
+  const [serveBallText, setServeBallText] = useState([]);
 
   // accessing data from API
   useEffect(() => {
@@ -111,6 +115,13 @@ const Editor = () => {
     serveOrder: selectedOrder,
   });
 
+  //serve radio button
+  const [selectedServerValue, setSelectedServerValue] = useState(selectedOrder);
+
+  const handleServerChange = (event) => {
+    setSelectedServerValue(event.target.value);
+  };
+
   const postData = {
     points: [points1, points2],
     games: [games1, games2],
@@ -118,26 +129,35 @@ const Editor = () => {
     prev_sets: [prevSets1, prevSets2],
     player_name: [inputValues.player1Name, inputValues.player2Name],
     date: inputValues.date,
+    selectedServer: selectedServerValue,
   };
 
   useEffect(() => {
     //work on this!!!
+    const serveLoc = () => {
+      const backendServeData = {
+        sX: serveX,
+        sY: serveY,
+        sBallText: serveBallText,
+      };
 
-    fetch("http://127.0.0.1:8000/serve_locations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(serveCircles),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle the response from the backend if needed
-        console.log(data);
+      fetch("http://127.0.0.1:8000/serve_locations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(backendServeData),
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          // Handle the response from the backend if needed
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
+    serveLoc();
   }, [serveCircles]);
 
   useEffect(() => {
@@ -260,6 +280,9 @@ const Editor = () => {
       setPoints2(0);
       // setSelectedServerValue(selectedServerValue === "p1" ? "p2" : "p1");
     }
+    setServeX([]);
+    setServeY([]);
+    setServeBallText([]);
     setServeCircles([]);
     setFirstServeClicked(true);
     setFirstServeScale(firstServeClicked ? "90%" : "100%");
@@ -390,6 +413,9 @@ const Editor = () => {
       setPoints2(0);
       setPoints1(0);
     }
+    setServeX([]);
+    setServeY([]);
+    setServeBallText([]);
     setServeCircles([]);
     setFirstServeClicked(true);
     setFirstServeScale(firstServeClicked ? "90%" : "100%");
@@ -464,6 +490,10 @@ const Editor = () => {
 
     const newServeCircle = { x, y, ballText };
 
+    setServeX([...serveX, x]);
+    setServeY([...serveY, y]);
+    setServeBallText([...serveBallText, ballText]);
+
     setServeCircles([...serveCircles, newServeCircle]);
 
     setServeData([...serveData, newServeCircle]);
@@ -537,13 +567,6 @@ const Editor = () => {
 
   const handleCloseEndResult = () => {
     setIsEndResultOpen(false);
-  };
-
-  //serve radio button
-  const [selectedServerValue, setSelectedServerValue] = useState(selectedOrder);
-
-  const handleServerChange = (event) => {
-    setSelectedServerValue(event.target.value);
   };
 
   //HTML rendering

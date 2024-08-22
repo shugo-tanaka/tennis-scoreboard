@@ -1,6 +1,7 @@
 // need to be able to pull data from supa base to populate the score board.
 // when refreshed, the name pulls player 2 before it pulls what ever it has been updated to.
 // serve data still needs to get pulled.
+//need to be able to show who has serve.
 
 import { useState, useEffect } from "react";
 import "./observer.css";
@@ -20,19 +21,43 @@ const Observer = () => {
   const [points2, setPoints2] = useState(0);
 
   const [serveCircles, setServeCircles] = useState([]);
-  const [serveData, setServeData] = useState([]);
+  // const [serveData, setServeData] = useState([]);
 
   // variables for the serve buttons
-  const [firstServeClicked, setFirstServeClicked] = useState(true);
+  // const [firstServeClicked, setFirstServeClicked] = useState(true);
   // const [firstServeColor, setFirstServeColor] = useState("white");
-  const [firstServeScale, setFirstServeScale] = useState("90%");
-  const [secondServeClicked, setSecondServeClicked] = useState(false);
+  // const [firstServeScale, setFirstServeScale] = useState("90%");
+  // const [secondServeClicked, setSecondServeClicked] = useState(false);
   // const [secondServeColor, setSecondServeColor] = useState("grey");
-  const [secondServeScale, setSecondServeScale] = useState("100%");
-  const [letClicked, setLetClicked] = useState(false);
+  // const [secondServeScale, setSecondServeScale] = useState("100%");
+  // const [letClicked, setLetClicked] = useState(false);
   // const [letColor, setLetColor] = useState("grey");
-  const [letScale, setLetScale] = useState("100%");
-  const [isPointInc, setIsPointInc] = useState(1);
+  // const [letScale, setLetScale] = useState("100%");
+  // const [isPointInc, setIsPointInc] = useState(1);
+
+  //serveCircle Data
+  const [serveX, setServeX] = useState([]);
+  const [serveY, setServeY] = useState([]);
+  const [serveBallText, setServeBallText] = useState([]);
+
+  //getting serveCircle Data from API
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/serve_circles")
+      .then((response) => response.json())
+      .then((output) => {
+        setServeX(output["x"]);
+        setServeY(output["y"]);
+        setServeBallText(output["ball_text"]);
+      })
+      .catch((error) => console.error("Error:", error));
+  }, []);
+
+  //server status related
+  const [selectedServerValue, setSelectedServerValue] = useState("");
+
+  const handleServerChange = (event) => {
+    setSelectedServerValue(event.target.value);
+  };
 
   // accessing data from API
   useEffect(() => {
@@ -50,6 +75,7 @@ const Observer = () => {
         setGames2(output["games_2"]);
         setPoints1(output["points_1"]);
         setPoints2(output["points_2"]);
+        setSelectedServerValue(output["server"]);
       })
       .catch((error) => console.error("Error:", error));
   }, []);
@@ -61,33 +87,26 @@ const Observer = () => {
     player2Name: "Player 2",
   });
 
-  const handleImageClick = (event) => {
-    const container = event.currentTarget;
-    const rect = container.getBoundingClientRect();
+  useEffect(() => {
+    const n = serveX.length;
+    const tempServeCircles = [];
+    for (let i = 0; i < n; i++) {
+      console.log(serveX[i], serveY[i], serveBallText[i]);
+      const x = serveX[i];
+      const y = serveY[i];
+      const ballText = serveBallText[i];
+      const newServeCircle = { x, y, ballText };
+      console.log(newServeCircle);
+      tempServeCircles.push(newServeCircle);
+      console.log(serveCircles.length);
+    }
+    setServeCircles(tempServeCircles);
+  }, [serveX, serveY, serveBallText]);
 
-    // Calculate the adjusted coordinates
-    const x = event.clientX - rect.left - 5;
-    const y = event.clientY - rect.top - 5;
-
-    const ballText = firstServeClicked
-      ? "I"
-      : secondServeClicked
-      ? "II"
-      : letClicked
-      ? "L"
-      : "";
-
-    // console.log("Ball Color:", ballColor);
-
-    const newServeCircle = { x, y, ballText };
-
-    setServeCircles([...serveCircles, newServeCircle]);
-
-    setServeData([...serveData, newServeCircle]);
-    // TODO: above includes non-serves
-  };
-
-  //end result pop up related
+  // activate once I can make it so that the serve circles and points update at different times, not just when the refresh button is pressed.
+  // useEffect(() => {
+  //   setServeCircles([]);
+  // }, [points1, points2]);
 
   const [winner, setWinner] = useState("");
 
@@ -97,16 +116,9 @@ const Observer = () => {
     setIsEndResultOpen(false);
   };
 
-  //server status related
-  const [selectedServerValue, setSelectedServerValue] = useState("");
-
-  const handleServerChange = (event) => {
-    setSelectedServerValue(event.target.value);
-  };
-
   return (
     <div>
-      <h1 className="tennis-score">
+      <h1 className="tennis-score-observer">
         {inputValues.date} {player1} vs {player2}
       </h1>
       <div className="end-result">
@@ -148,7 +160,7 @@ const Observer = () => {
                 type="radio"
                 value="p1"
                 checked={selectedServerValue === "p1"}
-                onChange={handleServerChange}
+                // onChange={handleServerChange}
               ></input>
             </label>
           </div>
@@ -178,7 +190,7 @@ const Observer = () => {
                 type="radio"
                 value="p2"
                 checked={selectedServerValue === "p2"}
-                onChange={handleServerChange}
+                // onChange={handleServerChange}
               ></input>
             </label>
           </div>
@@ -196,7 +208,7 @@ const Observer = () => {
         </div>
       </div>
       <div className="section2-observer">
-        <div className="tennis-court-image-observer" onClick={handleImageClick}>
+        <div className="tennis-court-image-observer">
           <img
             src="/tennis-court-diagram.jpg"
             alt="Tennis Court"

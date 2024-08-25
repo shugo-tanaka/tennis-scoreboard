@@ -11,6 +11,12 @@ body {
   color: solid black;
 }
 
+@media (min-width: 430px) {
+  body {
+    margin: 5% 0% 10% 0%;
+  }
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

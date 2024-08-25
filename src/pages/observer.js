@@ -41,7 +41,7 @@ const Observer = () => {
   const [serveBallText, setServeBallText] = useState([]);
 
   //getting serveCircle Data from API
-  useEffect(() => {
+  const fetchServeData = () => {
     fetch("http://127.0.0.1:8000/serve_circles")
       .then((response) => response.json())
       .then((output) => {
@@ -50,7 +50,7 @@ const Observer = () => {
         setServeBallText(output["ball_text"]);
       })
       .catch((error) => console.error("Error:", error));
-  }, []);
+  };
 
   //server status related
   const [selectedServerValue, setSelectedServerValue] = useState("");
@@ -60,7 +60,8 @@ const Observer = () => {
   };
 
   // accessing data from API
-  useEffect(() => {
+
+  const fetchScoreboardData = () => {
     // Make an API request to FastAPI endpoint
     fetch("http://127.0.0.1:8000/scoreboard_data")
       .then((response) => response.json())
@@ -78,7 +79,7 @@ const Observer = () => {
         setSelectedServerValue(output["server"]);
       })
       .catch((error) => console.error("Error:", error));
-  }, []);
+  };
 
   const [inputValues, setInputValues] = useState({
     date: new Date().toLocaleDateString(),
@@ -102,6 +103,11 @@ const Observer = () => {
     }
     setServeCircles(tempServeCircles);
   }, [serveX, serveY, serveBallText]);
+
+  useEffect(() => {
+    setInterval(fetchScoreboardData, 1000);
+    setInterval(fetchServeData, 1000);
+  }, []);
 
   // activate once I can make it so that the serve circles and points update at different times, not just when the refresh button is pressed.
   // useEffect(() => {

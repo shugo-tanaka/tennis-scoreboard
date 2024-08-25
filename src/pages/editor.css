@@ -8,6 +8,12 @@
   margin-bottom: 0px;
 }
 
+@media (min-width: 430px) {
+  .base-div {
+    margin-left: 0px;
+  }
+}
+
 /* set match info stuff */
 .set-match-info-div {
   /* display: grid; */

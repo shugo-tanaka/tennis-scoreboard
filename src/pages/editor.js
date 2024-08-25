@@ -571,7 +571,7 @@ const Editor = () => {
 
   //HTML rendering
   return (
-    <div>
+    <div className="base-div">
       <h1 className="tennis-score">
         {inputValues.date} {player1} vs {player2}
       </h1>
@@ -891,6 +891,7 @@ const Editor = () => {
           </div>
           {/* maybe insert pic of undo instead */}
         </div>
+        ;
       </div>
     </div>
   );

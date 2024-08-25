@@ -42,7 +42,7 @@ const Observer = () => {
 
   //getting serveCircle Data from API
   const fetchServeData = () => {
-    fetch("http://127.0.0.1:8000/serve_circles")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/serve_circles`)
       .then((response) => response.json())
       .then((output) => {
         setServeX(output["x"]);
@@ -63,7 +63,7 @@ const Observer = () => {
 
   const fetchScoreboardData = () => {
     // Make an API request to FastAPI endpoint
-    fetch("http://127.0.0.1:8000/scoreboard_data")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/scoreboard_data`)
       .then((response) => response.json())
       .then((output) => {
         setPlayer1(output["player1"]);

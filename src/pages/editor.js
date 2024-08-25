@@ -61,7 +61,7 @@ const Editor = () => {
   // accessing data from API
   useEffect(() => {
     // Make an API request to FastAPI endpoint
-    fetch("http://127.0.0.1:8000/player_names/")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/player_names/`)
       .then((response) => response.json())
       .then((output) => {
         setPlayer1(output[0]);
@@ -70,8 +70,10 @@ const Editor = () => {
       .catch((error) => console.error("Error:", error));
   }, []);
 
+  console.log(process.env.REACT_APP_BACKEND_URL);
+
   const undoPoint = () => {
-    fetch("http://127.0.0.1:8000/undo_score/")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/undo_score/`)
       .then((response) => response.json())
       .then((output) => {
         console.log(output.data[output.data.length - 1]);
@@ -141,7 +143,7 @@ const Editor = () => {
         sBallText: serveBallText,
       };
 
-      fetch("http://127.0.0.1:8000/serve_locations", {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/serve_locations`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -162,7 +164,7 @@ const Editor = () => {
 
   useEffect(() => {
     const updateSupa = () => {
-      fetch("http://127.0.0.1:8000/scoreboard_input", {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/scoreboard_input`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -514,7 +516,7 @@ const Editor = () => {
 
   useEffect(() => {
     const updateSupaMatch = () => {
-      fetch("http://127.0.0.1:8000/match_data", {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/match_data`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

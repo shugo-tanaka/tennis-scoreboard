@@ -13,12 +13,14 @@ const Observer = () => {
   const [currSets1, setCurrSets1] = useState(0);
   const [games1, setGames1] = useState(0);
   const [points1, setPoints1] = useState(0);
+  const [sets1, setSets1] = useState([...prevSets1, games1]);
 
   const [prevSets2, setPrevSets2] = useState([]);
   const [player2, setPlayer2] = useState("Player 2");
   const [currSets2, setCurrSets2] = useState(0);
   const [games2, setGames2] = useState(0);
   const [points2, setPoints2] = useState(0);
+  const [sets2, setSets2] = useState([...prevSets2, games2]);
 
   const [serveCircles, setServeCircles] = useState([]);
   // const [serveData, setServeData] = useState([]);
@@ -118,9 +120,20 @@ const Observer = () => {
 
   const [isEndResultOpen, setIsEndResultOpen] = useState(false);
 
+  useEffect(() => {
+    setSets1(sets1.slice(0, -1));
+    setSets2(sets2.slice(0, -1));
+  }, [isEndResultOpen]);
+
   const handleCloseEndReult = () => {
     setIsEndResultOpen(false);
   };
+
+  // combine prev sets and games
+  useEffect(() => {
+    setSets1([...prevSets1, games1]);
+    setSets2([...prevSets2, games2]);
+  }, [games1, games2]);
 
   return (
     <div>
@@ -143,22 +156,18 @@ const Observer = () => {
         )}
       </div>
 
-      <div className="data-table">
+      <div className="data-table-observer">
         <div className="labels">
-          <div className="previous-sets">Previous Sets</div>
           <div className="name">Player Name</div>
           <div className="serve-status">Serve</div>
-          <div className="sets">Sets</div>
-          <div className="games">Games</div>
+          <div className="previous-sets">Sets</div>
+          {/* <div className="sets">Sets</div>
+          <div className="games">Games</div> */}
           <div className="points">Points</div>
         </div>
         <div className="player1">
           {/*player1 1*/}
-          <div className="player-previous-sets">
-            {prevSets1.map((set) => {
-              return <div>{set}</div>;
-            })}
-          </div>
+
           <div className="player-name">{player1}</div>
           <div className="player-serve-status">
             <label>
@@ -166,12 +175,17 @@ const Observer = () => {
                 type="radio"
                 value="p1"
                 checked={selectedServerValue === "p1"}
-                // onChange={handleServerChange}
+                onChange={handleServerChange}
               ></input>
             </label>
           </div>
-          <div className="player-sets">{currSets1}</div>
-          <div className="player-games">{games1}</div>
+          <div className="player-previous-sets">
+            {sets1.map((set) => {
+              return <div>{set}</div>;
+            })}
+          </div>
+          {/* <div className="player-sets">{currSets1}</div>
+          <div className="player-games">{games1}</div> */}
           <div className="player-points">{points1}</div>
           {/* <div
             className="add-points"
@@ -184,11 +198,7 @@ const Observer = () => {
         </div>
         <div className="player2">
           {/*player two*/}
-          <div className="player-previous-sets">
-            {prevSets2.map((set) => {
-              return <div>{set}</div>;
-            })}
-          </div>
+
           <div className="player-name">{player2}</div>
           <div className="player-serve-status">
             <label>
@@ -196,12 +206,17 @@ const Observer = () => {
                 type="radio"
                 value="p2"
                 checked={selectedServerValue === "p2"}
-                // onChange={handleServerChange}
+                onChange={handleServerChange}
               ></input>
             </label>
           </div>
-          <div className="player-sets">{currSets2}</div>
-          <div className="player-games">{games2}</div>
+          <div className="player-previous-sets">
+            {sets2.map((set) => {
+              return <div>{set}</div>;
+            })}
+          </div>
+          {/* <div className="player-sets">{currSets2}</div>
+          <div className="player-games">{games2}</div> */}
           <div className="player-points">{points2}</div>
           {/* <div
             className="add-points"

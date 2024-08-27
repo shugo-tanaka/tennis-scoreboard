@@ -11,6 +11,11 @@
 
 //react router.
 
+//at the very beginning, sets isn't showing up as 0,0
+
+//need a refresh button for editor side to pull last available data!!!
+//was in the middle of changing the scoreboard layout to match what ESPN has. Also working on mobile media query.
+
 import { useState, useEffect } from "react";
 import "./editor.css";
 
@@ -21,12 +26,14 @@ const Editor = () => {
   const [currSets1, setCurrSets1] = useState(0);
   const [games1, setGames1] = useState(0);
   const [points1, setPoints1] = useState(0);
+  const [sets1, setSets1] = useState([...prevSets1, games1]);
 
   const [prevSets2, setPrevSets2] = useState([]);
   const [player2, setPlayer2] = useState("Player 2");
   const [currSets2, setCurrSets2] = useState(0);
   const [games2, setGames2] = useState(0);
   const [points2, setPoints2] = useState(0);
+  const [sets2, setSets2] = useState([...prevSets2, games2]);
 
   const [serveCircles, setServeCircles] = useState([]);
   const [serveData, setServeData] = useState([]);
@@ -70,7 +77,7 @@ const Editor = () => {
       .catch((error) => console.error("Error:", error));
   }, []);
 
-  console.log(process.env.REACT_APP_BACKEND_URL);
+  // console.log(process.env.REACT_APP_BACKEND_URL);
 
   const undoPoint = () => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/undo_score/`)
@@ -189,6 +196,12 @@ const Editor = () => {
     }
   }, [postData]);
 
+  // combine prev sets and games
+  useEffect(() => {
+    setSets1([...prevSets1, games1]);
+    setSets2([...prevSets2, games2]);
+  }, [games1, games2]);
+
   //UseEffects to change server radio button automatically.
   useEffect(() => {
     if ((currSets1 + currSets2) % 2 == 0) {
@@ -208,20 +221,9 @@ const Editor = () => {
     }
     setIsUpdating(true);
     // stop being able to be pushed once match is won
-    if (currSets1 === 2 || currSets2 === 2) {
-      if (currSets1 > currSets2) {
-        setWinner(player1);
-      } else {
-        setWinner(player2);
-      }
-
-      setIsEndResultOpen(true);
-
-      return null;
-    }
 
     // tie break replacement for set 3
-    else if (currSets1 === 1 && currSets2 === 1) {
+    if (currSets1 === 1 && currSets2 === 1) {
       setPoints1((prevPoints1) => {
         const newPoints1 = prevPoints1 + 1;
         if (newPoints1 + points2 == 1) {
@@ -344,17 +346,18 @@ const Editor = () => {
     }
 
     // stop being able to be pushed once match is won
-    else if (currSets1 === 2 || currSets2 === 2) {
-      if (currSets1 > currSets2) {
-        setWinner(player1);
-      } else {
-        setWinner(player2);
-      }
+    // else if (currSets1 === 2 || currSets2 === 2) {
+    //   if (currSets1 > currSets2) {
+    //     setWinner(player1);
+    //   } else {
+    //     setWinner(player2);
+    //   }
 
-      setIsEndResultOpen(true);
+    //   setIsEndResultOpen(true);
 
-      return null;
-    } else if (currSets1 === 2 || currSets2 === 2) {
+    //   return null;
+    // } else
+    if (currSets1 === 2 || currSets2 === 2) {
       return null;
       //tie break going into 3rd set scenario
     } else if (currSets2 === 1 && currSets1 === 1) {
@@ -571,6 +574,27 @@ const Editor = () => {
     setIsEndResultOpen(false);
   };
 
+  //display winner
+  useEffect(() => {
+    if (currSets1 === 2 || currSets2 === 2) {
+      if (currSets1 > currSets2) {
+        setWinner(player1);
+      } else {
+        setWinner(player2);
+      }
+
+      setIsEndResultOpen(true);
+
+      return null;
+    }
+  }, [currSets1, currSets2]);
+
+  //remove new games when winner is decided
+  useEffect(() => {
+    setSets1(sets1.slice(0, -1));
+    setSets2(sets2.slice(0, -1));
+  }, [isEndResultOpen]);
+
   //HTML rendering
   return (
     <div className="base-div">
@@ -699,20 +723,16 @@ const Editor = () => {
       </div>
       <div className="data-table">
         <div className="labels">
-          <div className="previous-sets">Previous Sets</div>
           <div className="name">Player Name</div>
           <div className="serve-status">Serve</div>
-          <div className="sets">Sets</div>
-          <div className="games">Games</div>
+          <div className="previous-sets">Sets</div>
+          {/* <div className="sets">Sets</div>
+          <div className="games">Games</div> */}
           <div className="points">Points</div>
         </div>
         <div className="player1">
           {/*player1 1*/}
-          <div className="player-previous-sets">
-            {prevSets1.map((set) => {
-              return <div>{set}</div>;
-            })}
-          </div>
+
           <div className="player-name">{player1}</div>
           <div className="player-serve-status">
             <label>
@@ -724,8 +744,13 @@ const Editor = () => {
               ></input>
             </label>
           </div>
-          <div className="player-sets">{currSets1}</div>
-          <div className="player-games">{games1}</div>
+          <div className="player-previous-sets">
+            {sets1.map((set) => {
+              return <div>{set}</div>;
+            })}
+          </div>
+          {/* <div className="player-sets">{currSets1}</div>
+          <div className="player-games">{games1}</div> */}
           <div className="player-points">{points1}</div>
           {/* <div
             className="add-points"
@@ -738,11 +763,7 @@ const Editor = () => {
         </div>
         <div className="player2">
           {/*player two*/}
-          <div className="player-previous-sets">
-            {prevSets2.map((set) => {
-              return <div>{set}</div>;
-            })}
-          </div>
+
           <div className="player-name">{player2}</div>
           <div className="player-serve-status">
             <label>
@@ -754,8 +775,13 @@ const Editor = () => {
               ></input>
             </label>
           </div>
-          <div className="player-sets">{currSets2}</div>
-          <div className="player-games">{games2}</div>
+          <div className="player-previous-sets">
+            {sets2.map((set) => {
+              return <div>{set}</div>;
+            })}
+          </div>
+          {/* <div className="player-sets">{currSets2}</div>
+          <div className="player-games">{games2}</div> */}
           <div className="player-points">{points2}</div>
           {/* <div
             className="add-points"

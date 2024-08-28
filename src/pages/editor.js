@@ -1,20 +1,11 @@
 // TO DO:
 // need to be able to display that the game is finished. Created but add to the observer side as opposed to the score keeping side.
-// need to be able to do error handling for inputing match information.
 // what if there are multiple matches in a day - how do you distinguish games if not opponent name?
-// if date is not inputted, submit should throw an error message. Or will there always be the opponent name information?
 // need to be able to show what side Koji is on, etc. Maybe create a button that switches sides? Probably don't need one TBH.
 // Need to also show which side he is serving to.
 // need to convert it to mobile.
-
-// serve balls need to translate to other screen.
-
-//react router.
-
-//at the very beginning, sets isn't showing up as 0,0
-
-//need a refresh button for editor side to pull last available data!!!
-//was in the middle of changing the scoreboard layout to match what ESPN has. Also working on mobile media query.
+// need a refresh button for editor side to pull last available data!!!
+// maybe add notes capabilities. maybe do a popup after you click one of the point options, which allows for common notes.
 
 import { useState, useEffect } from "react";
 import "./editor.css";
@@ -195,12 +186,6 @@ const Editor = () => {
       setIsUpdating(false);
     }
   }, [postData]);
-
-  // combine prev sets and games
-  useEffect(() => {
-    setSets1([...prevSets1, games1]);
-    setSets2([...prevSets2, games2]);
-  }, [games1, games2]);
 
   //UseEffects to change server radio button automatically.
   useEffect(() => {
@@ -594,6 +579,12 @@ const Editor = () => {
     setSets1(sets1.slice(0, -1));
     setSets2(sets2.slice(0, -1));
   }, [isEndResultOpen]);
+
+  // combine prev sets and games
+  useEffect(() => {
+    setSets1([...prevSets1, games1]);
+    setSets2([...prevSets2, games2]);
+  }, [games1, games2]);
 
   //HTML rendering
   return (

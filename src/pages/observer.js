@@ -3,6 +3,8 @@
 // serve data still needs to get pulled.
 //need to be able to show who has serve.
 
+// vercel for deployment
+
 import { useState, useEffect } from "react";
 import "./observer.css";
 

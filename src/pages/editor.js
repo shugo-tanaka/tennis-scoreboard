@@ -6,6 +6,7 @@
 // need to convert it to mobile.
 // need a refresh button for editor side to pull last available data!!!
 // maybe add notes capabilities. maybe do a popup after you click one of the point options, which allows for common notes.
+// when undoing serves, observer end needs to undo as well!
 
 import { useState, useEffect } from "react";
 import "./editor.css";
@@ -494,10 +495,20 @@ const Editor = () => {
     const tempServeCircles = [...serveCircles];
     tempServeCircles.pop();
 
+    const tempServeX = [...serveX];
+    tempServeX.pop();
+    const tempServeY = [...serveY];
+    tempServeY.pop();
+    const tempServeBallText = [...serveBallText];
+    tempServeBallText.pop();
+
     const tempServeData = [...serveData];
     tempServeData.pop();
     setServeCircles(tempServeCircles);
     setServeData(tempServeData);
+    setServeX(tempServeX);
+    setServeY(tempServeY);
+    setServeBallText(tempServeBallText);
   };
 
   //pop-up related functions
